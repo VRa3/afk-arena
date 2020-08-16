@@ -1,0 +1,22 @@
+<mat-card class="hero-card">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image">
+      <img class="hero-card__avatar" src="{{hero.avatarURL}}" alt="{{hero.name}} avatar">
+    </div>
+    <mat-card-title>{{hero.name}}</mat-card-title>
+    <mat-card-subtitle>{{faction[hero.faction]}}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      atk: {{hero.atk}}
+      def: {{hero.def}}
+      <br>
+      description: {{hero?.description}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="starToggle()" [ngClass]="isStarred ? 'star-active' : null">
+      <mat-icon aria-hidden="false" aria-label="Star character icon">star</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

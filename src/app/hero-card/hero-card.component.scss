@@ -1,0 +1,24 @@
+.hero-card {
+  max-width: 300px;
+
+  &__avatar {
+    border-radius: 50% 50% 0 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .mat-card-avatar {
+    $avatar-size: 60px;
+
+    width: $avatar-size;
+    height: $avatar-size;
+  }
+
+  .mat-card-actions {
+    text-align: right;
+  }
+
+  .star-active {
+    color: rgb(252, 217, 131);
+  }
+}
