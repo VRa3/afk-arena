@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Ihero} from './hero-card/Ihero';
-import {Faction} from './models/enums/faction';
 
 @Component({
   selector: 'app-root',

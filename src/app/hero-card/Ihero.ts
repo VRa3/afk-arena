@@ -8,4 +8,5 @@ export interface Ihero {
   def: number;
   avatarURL: string;
   description?: string;
+  favorite?: boolean;
 }

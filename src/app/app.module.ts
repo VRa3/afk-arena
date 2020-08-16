@@ -9,8 +9,11 @@ import {HeroCardComponent} from './hero-card/hero-card.component';
 import {MatIconModule} from '@angular/material/icon';
 import {AppRoutingModule} from './app-routing.module';
 import {OverviewComponent} from './overview/overview.component';
-import { MyTeamComponent } from './my-team/my-team.component';
-import { ShopComponent } from './shop/shop.component';
+import {MyTeamComponent} from './my-team/my-team.component';
+import {ShopComponent} from './shop/shop.component';
+import {StoreModule} from '@ngrx/store';
+import {reducer} from './store/store.reducer';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import { ShopComponent } from './shop/shop.component';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot({store: reducer}),
+    StoreDevtoolsModule.instrument({maxAge: 25})
   ],
   providers: [],
   bootstrap: [AppComponent]
