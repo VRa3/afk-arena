@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Ihero} from './Ihero';
 import {Faction} from '../models/enums/faction';
+import {Store} from '@ngrx/store';
+import {starToggler} from '../store/store.actions';
 
 @Component({
   selector: 'app-hero-card',
@@ -9,18 +11,17 @@ import {Faction} from '../models/enums/faction';
 })
 export class HeroCardComponent implements OnInit {
   @Input() hero: Ihero;
-  isStarred = false;
+  isStarred: boolean;
   faction = Faction;
 
-  constructor() {
-    console.log('ehh');
+  constructor(private store: Store) {
   }
 
   ngOnInit(): void {
-    console.log('ehhh');
+    this.isStarred = this.hero.favorite;
   }
 
   starToggle() {
-    this.isStarred = !this.isStarred;
+    this.store.dispatch(starToggler({character: this.hero}));
   }
 }
