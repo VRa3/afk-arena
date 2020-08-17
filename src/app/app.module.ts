@@ -14,6 +14,8 @@ import {ShopComponent} from './shop/shop.component';
 import {StoreModule} from '@ngrx/store';
 import {reducer} from './store/store.reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     OverviewComponent,
     MyTeamComponent,
     ShopComponent,
+    BottomBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     MatIconModule,
     AppRoutingModule,
     StoreModule.forRoot({store: reducer}),
-    StoreDevtoolsModule.instrument({maxAge: 25})
+    StoreDevtoolsModule.instrument({maxAge: 25}),
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

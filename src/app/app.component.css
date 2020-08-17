@@ -5,3 +5,9 @@
   justify-content: flex-start;
   grid-gap: 30px;
 }
+
+.container {
+  margin: 0 auto;
+  padding: 0 15px;
+  max-width: 1200px;
+}

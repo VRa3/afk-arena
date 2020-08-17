@@ -1,8 +1,12 @@
-<div class="navbar">
-  <a routerLink="/overview">Overview</a>
-  <a routerLink="/my-team">My Team</a>
-  <a routerLink="/shop">Shop</a>
-  <a routerLink="/mission">Mission</a>
-</div>
+<div class="container">
+  <div class="navbar">
+    <a routerLink="/overview">Overview</a>
+    <a routerLink="/my-team">My Team</a>
+    <a routerLink="/shop">Shop</a>
+    <a routerLink="/mission">Mission</a>
+  </div>
 
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
+
+  <app-bottom-bar [user]="user"></app-bottom-bar>
+</div>

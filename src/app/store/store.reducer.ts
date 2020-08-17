@@ -2,9 +2,11 @@ import {Action, createReducer, on} from '@ngrx/store';
 import {starToggler} from './store.actions';
 import {Ihero} from '../hero-card/Ihero';
 import {Faction} from '../models/enums/faction';
+import {IUser} from '../models/interfaces/IUser';
 
 export interface IState {
   heroesList: Ihero[];
+  user: IUser;
 }
 
 const initialState: IState = {
@@ -41,7 +43,17 @@ const initialState: IState = {
       description: `Somewhere far away, Rowan hoisted his bag and walked one step closer to the destiny he would create for himself.`,
       favorite: false
     }
-  ]
+  ],
+  user: {
+    resources: {
+      money: {
+        gold: 100,
+        silver: 0,
+        copper: 0
+      }
+    },
+    lvl: 1
+  }
 };
 
 const storeReducer = createReducer(
@@ -52,7 +64,7 @@ const storeReducer = createReducer(
 const starCharacterReducer = (state, {character}) => {
   const heroesArray = state.heroesList.map(hero => {
     if (hero.name === character.name) {
-      return {...hero, favorite: true};
+      return {...hero, favorite: !character.favorite};
     }
 
     return {...hero};
