@@ -14,6 +14,7 @@ const initialState: IState = {
     {
       name: 'Lucius',
       lvlCap: 240,
+      lvlCurrent: 1,
       faction: Faction.Lightbearers,
       atk: 45,
       def: 80,
@@ -25,6 +26,7 @@ const initialState: IState = {
     {
       name: 'Shemira',
       lvlCap: 240,
+      lvlCurrent: 1,
       faction: Faction.Graveborn,
       atk: 88,
       def: 34,
@@ -36,6 +38,7 @@ const initialState: IState = {
     {
       name: 'Rowan',
       lvlCap: 240,
+      lvlCurrent: 1,
       faction: Faction.Lightbearers,
       atk: 48,
       def: 56,
@@ -51,7 +54,7 @@ const initialState: IState = {
         silver: 0,
         copper: 0
       },
-      heroes: ['string']
+      heroes: []
     },
     lvl: 1
   }

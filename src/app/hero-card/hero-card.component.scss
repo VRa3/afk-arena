@@ -15,10 +15,15 @@
   }
 
   .mat-card-actions {
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .star-active {
     color: rgb(252, 217, 131);
   }
+}
+
+.mat-menu-item.green {
+  color: #46ff00 !important;
 }

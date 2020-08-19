@@ -1,7 +1,5 @@
 <h1>Actually my team has {{myTeam.length}} heroes.</h1>
 
 <div *ngIf="myTeam.length">
-  <p *ngFor="let hero of myTeam">
-    {{hero.name}}
-  </p>
+  <app-hero-card *ngFor="let hero of myTeam" [hero]="hero"></app-hero-card>
 </div>

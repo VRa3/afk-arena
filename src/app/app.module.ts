@@ -16,6 +16,7 @@ import {reducer} from './store/store.reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     AppRoutingModule,
     StoreModule.forRoot({store: reducer}),
     StoreDevtoolsModule.instrument({maxAge: 25}),
-    MatTabsModule
+    MatTabsModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

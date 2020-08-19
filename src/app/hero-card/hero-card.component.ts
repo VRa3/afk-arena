@@ -1,20 +1,32 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Ihero} from './Ihero';
 import {Faction} from '../models/enums/faction';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {starToggler} from '../store/store.actions';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-hero-card',
   templateUrl: './hero-card.component.html',
-  styleUrls: ['./hero-card.component.scss']
+  styleUrls: ['./hero-card.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HeroCardComponent implements OnInit {
   @Input() hero: Ihero;
+  store$: Observable<any>;
   isStarred: boolean;
   faction = Faction;
+  lvlModificator = 0.25;
 
-  constructor(private store: Store) {
+  get currentCP() {
+    const {lvlModificator} = this;
+    const {atk, def, lvlCurrent} = this.hero;
+
+    return Math.floor((lvlCurrent * lvlModificator) + (atk + def));
+  }
+
+  constructor(private store: Store<any>) {
+    this.store$ = store.pipe(select('store'));
   }
 
   ngOnInit(): void {

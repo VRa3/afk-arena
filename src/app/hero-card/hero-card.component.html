@@ -18,5 +18,22 @@
     <button mat-raised-button (click)="starToggle()" [ngClass]="isStarred ? 'star-active' : null">
       <mat-icon aria-hidden="false" aria-label="Star character icon">star</mat-icon>
     </button>
+
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>insights</mat-icon>
+          <span>Current CP : {{currentCP}}</span>
+        </button>
+        <button class="green" mat-menu-item>
+          <mat-icon>face</mat-icon>
+          <span>Obtained?</span>
+        </button>
+      </mat-menu>
+    </div>
   </mat-card-actions>
 </mat-card>
