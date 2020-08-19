@@ -19,9 +19,7 @@ export class MyTeamComponent implements OnInit {
 
   ngOnInit(): void {
     this.store$.subscribe(store => {
-      const {heroesList} = store;
-
-      this.myTeam = heroesList.filter(hero => hero.favorite);
+      this.myTeam = store.user.resources.heroes;
     });
   }
 }

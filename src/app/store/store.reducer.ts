@@ -1,5 +1,5 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {starToggler} from './store.actions';
+import {addRandomHeroOnInit, starToggler} from './store.actions';
 import {Ihero} from '../hero-card/Ihero';
 import {Faction} from '../models/enums/faction';
 import {IUser} from '../models/interfaces/IUser';
@@ -50,7 +50,8 @@ const initialState: IState = {
         gold: 100,
         silver: 0,
         copper: 0
-      }
+      },
+      heroes: ['string']
     },
     lvl: 1
   }
@@ -58,7 +59,8 @@ const initialState: IState = {
 
 const storeReducer = createReducer(
   initialState,
-  on(starToggler, (state, character) => starCharacterReducer(state, character))
+  on(starToggler, (state, character) => starCharacterReducer(state, character)),
+  on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state))
 );
 
 const starCharacterReducer = (state, {character}) => {
@@ -73,6 +75,21 @@ const starCharacterReducer = (state, {character}) => {
   return {
     ...state,
     heroesList: heroesArray
+  };
+};
+
+const addRandomHeroOnInitReducer = state => {
+  const randomIndex = Math.round(Math.random() * state.heroesList.length);
+
+  return {
+    ...state,
+    user: {
+      ...state.user,
+      resources: {
+        ...state.user.resources,
+        heroes: [state.heroesList[randomIndex]]
+      }
+    }
   };
 };
 

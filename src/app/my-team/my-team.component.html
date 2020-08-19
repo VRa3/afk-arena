@@ -1,2 +1,7 @@
 <h1>Actually my team has {{myTeam.length}} heroes.</h1>
-<p *ngFor="let hero of myTeam">{{hero?.name}}</p>
+
+<div *ngIf="myTeam.length">
+  <p *ngFor="let hero of myTeam">
+    {{hero.name}}
+  </p>
+</div>

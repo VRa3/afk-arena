@@ -6,4 +6,5 @@ export interface IMoney {
 
 export interface IResources {
   money: IMoney;
+  heroes: any[];
 }
