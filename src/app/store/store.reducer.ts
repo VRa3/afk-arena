@@ -3,15 +3,18 @@ import {addRandomHeroOnInit, starToggler} from './store.actions';
 import {Ihero} from '../hero-card/Ihero';
 import {Faction} from '../models/enums/faction';
 import {IUser} from '../models/interfaces/IUser';
+import {IMoney} from '../models/interfaces/IResources';
 
 export interface IState {
-  heroesList: Ihero[];
-  user: IUser;
+  heroesList: {};
+  money: IMoney;
+  playerLvl: number;
+  obtainedHeroes: [];
 }
 
 const initialState: IState = {
-  heroesList: [
-    {
+  heroesList: {
+    Lucius: {
       name: 'Lucius',
       lvlCap: 240,
       lvlCurrent: 1,
@@ -23,7 +26,7 @@ const initialState: IState = {
       shields that can absorb enemy damage.`,
       favorite: false
     },
-    {
+    Shemira: {
       name: 'Shemira',
       lvlCap: 240,
       lvlCurrent: 1,
@@ -35,7 +38,7 @@ const initialState: IState = {
       only does it do high damage, but it also hits every single enemy on the battlefield at the same time.`,
       favorite: false
     },
-    {
+    Rowan: {
       name: 'Rowan',
       lvlCap: 240,
       lvlCurrent: 1,
@@ -46,53 +49,45 @@ const initialState: IState = {
       description: `Somewhere far away, Rowan hoisted his bag and walked one step closer to the destiny he would create for himself.`,
       favorite: false
     }
-  ],
-  user: {
-    resources: {
-      money: {
-        gold: 100,
-        silver: 0,
-        copper: 0
-      },
-      heroes: []
-    },
-    lvl: 1
-  }
+  },
+  money: {
+    gold: 100,
+    silver: 0,
+    copper: 0
+  },
+  playerLvl: 1,
+  obtainedHeroes: []
 };
 
 const storeReducer = createReducer(
   initialState,
-  on(starToggler, (state, character) => starCharacterReducer(state, character)),
+  on(starToggler, (state, characterName) => starCharacterReducer(state, characterName)),
   on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state))
 );
 
-const starCharacterReducer = (state, {character}) => {
-  const heroesArray = state.heroesList.map(hero => {
-    if (hero.name === character.name) {
-      return {...hero, favorite: !character.favorite};
-    }
-
-    return {...hero};
-  });
+const starCharacterReducer = (state, {characterName}) => {
+  const favoriteToggle = state.heroesList[characterName].favorite;
 
   return {
     ...state,
-    heroesList: heroesArray
+    heroesList: {
+      ...state.heroesList,
+      [characterName]: {
+        ...state.heroesList[characterName],
+        favorite: !favoriteToggle
+      }
+    }
   };
 };
 
 const addRandomHeroOnInitReducer = state => {
-  const randomIndex = Math.round(Math.random() * state.heroesList.length);
+  const allHeroesNames = Object.keys(state.heroesList);
+  const randomIndex = Math.floor(Math.random() * allHeroesNames.length);
+  const key = allHeroesNames[randomIndex];
 
   return {
     ...state,
-    user: {
-      ...state.user,
-      resources: {
-        ...state.user.resources,
-        heroes: [state.heroesList[randomIndex]]
-      }
-    }
+    obtainedHeroes: [state.heroesList[key]]
   };
 };
 

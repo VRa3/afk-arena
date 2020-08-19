@@ -1,5 +1,6 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {IUser} from '../../models/interfaces/IUser';
+import {IMoney} from '../../models/interfaces/IResources';
 
 @Component({
   selector: 'app-bottom-bar',
@@ -8,7 +9,7 @@ import {IUser} from '../../models/interfaces/IUser';
   encapsulation: ViewEncapsulation.None
 })
 export class BottomBarComponent implements OnInit {
-  @Input() user: IUser;
+  @Input() money: IMoney;
 
   constructor() {}
 

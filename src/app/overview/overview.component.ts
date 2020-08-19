@@ -20,7 +20,15 @@ export class OverviewComponent implements OnInit {
   ngOnInit(): void {
     this.store$.subscribe(store => {
       const {heroesList} = store;
-      this.heroes = heroesList.map(hero => hero);
+      const heroesArray = [];
+
+      for (const hero in heroesList) {
+        if (heroesList.hasOwnProperty(hero)) {
+          heroesArray.push(heroesList[hero]);
+        }
+      }
+
+      this.heroes = heroesArray;
     });
   }
 }

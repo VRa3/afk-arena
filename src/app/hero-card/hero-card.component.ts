@@ -34,6 +34,6 @@ export class HeroCardComponent implements OnInit {
   }
 
   starToggle() {
-    this.store.dispatch(starToggler({character: this.hero}));
+    this.store.dispatch(starToggler({characterName: this.hero.name}));
   }
 }
