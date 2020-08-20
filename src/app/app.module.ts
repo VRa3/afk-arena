@@ -17,6 +17,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
+import { MissionComponent } from './mission/mission.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MyTeamComponent,
     ShopComponent,
     BottomBarComponent,
+    MissionComponent,
   ],
   imports: [
     BrowserModule,
