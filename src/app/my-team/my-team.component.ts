@@ -19,7 +19,15 @@ export class MyTeamComponent implements OnInit {
 
   ngOnInit(): void {
     this.store$.subscribe(store => {
-      this.myTeam = store.obtainedHeroes;
+      this.myTeam = [];
+
+      for (const hero in store.heroesList) {
+        if (store.heroesList.hasOwnProperty(hero)) {
+          if (store.heroesList[hero].obtained) {
+            this.myTeam.push(store.heroesList[hero]);
+          }
+        }
+      }
     });
   }
 }

@@ -9,7 +9,6 @@ export interface IState {
   heroesList: {};
   money: IMoney;
   playerLvl: number;
-  obtainedHeroes: [];
 }
 
 const initialState: IState = {
@@ -56,7 +55,6 @@ const initialState: IState = {
     copper: 0
   },
   playerLvl: 1,
-  obtainedHeroes: []
 };
 
 const storeReducer = createReducer(
@@ -83,11 +81,18 @@ const starCharacterReducer = (state, {characterName}) => {
 const addRandomHeroOnInitReducer = state => {
   const allHeroesNames = Object.keys(state.heroesList);
   const randomIndex = Math.floor(Math.random() * allHeroesNames.length);
-  const key = allHeroesNames[randomIndex];
+  const characterName = allHeroesNames[randomIndex];
+  const obtainedToggle = !!state.heroesList[characterName].obtained;
 
   return {
     ...state,
-    obtainedHeroes: [state.heroesList[key]]
+    heroesList: {
+      ...state.heroesList,
+      [characterName]: {
+        ...state.heroesList[characterName],
+        obtained: !obtainedToggle
+      }
+    }
   };
 };
 
