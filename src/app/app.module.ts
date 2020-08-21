@@ -18,6 +18,7 @@ import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
 import { MissionComponent } from './mission/mission.component';
+import {AppService} from './app.service';
 
 @NgModule({
   declarations: [
@@ -37,11 +38,11 @@ import { MissionComponent } from './mission/mission.component';
     MatIconModule,
     AppRoutingModule,
     StoreModule.forRoot({store: reducer}),
-    StoreDevtoolsModule.instrument({maxAge: 25}),
+    // StoreDevtoolsModule.instrument({maxAge: 25}),
     MatTabsModule,
     MatMenuModule
   ],
-  providers: [],
+  providers: [AppService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

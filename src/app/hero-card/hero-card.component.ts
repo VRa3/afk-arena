@@ -13,7 +13,6 @@ import {Observable} from 'rxjs';
 })
 export class HeroCardComponent implements OnInit {
   @Input() hero: Ihero;
-  @Output() returnCP = new EventEmitter<{}>();
   store$: Observable<any>;
   isStarred: boolean;
   faction = Faction;
@@ -32,17 +31,9 @@ export class HeroCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.isStarred = this.hero.favorite;
-    this.returnCurrentCP();
   }
 
   starToggle() {
     this.store.dispatch(starToggler({characterName: this.hero.name}));
-  }
-
-  returnCurrentCP() {
-    this.returnCP.emit({
-      name: this.hero.name,
-      cp: this.currentCP
-    });
   }
 }

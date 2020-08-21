@@ -3,6 +3,7 @@ import {select, State} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {IState} from '../store/store.reducer';
 import {Ihero} from '../hero-card/Ihero';
+import {AppService} from '../app.service';
 
 @Component({
   selector: 'app-my-team',
@@ -15,7 +16,7 @@ export class MyTeamComponent implements OnInit, AfterViewChecked {
   teamMembers = [];
   store$: Observable<IState>;
 
-  constructor(private store: State<IState>, private cdRef: ChangeDetectorRef) {
+  constructor(private store: State<IState>, private cdRef: ChangeDetectorRef, private appService: AppService) {
     this.store$ = store.pipe(select('store'));
   }
 
@@ -31,15 +32,8 @@ export class MyTeamComponent implements OnInit, AfterViewChecked {
         }
       }
     });
-  }
 
-  getValue({cp, name}) {
-    if (this.teamMembers.includes(name)) {
-      return;
-    }
-
-    this.teamMembers.push(name);
-    this.teamPower += cp;
+    this.teamPower = this.appService.countTeamCP();
   }
 
   ngAfterViewChecked(): void {
