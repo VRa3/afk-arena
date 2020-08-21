@@ -1,5 +1,5 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {addRandomHeroOnInit, starToggler} from './store.actions';
+import {addMoney, addRandomHeroOnInit, deductMoney, starToggler} from './store.actions';
 import {Ihero} from '../hero-card/Ihero';
 import {Faction} from '../models/enums/faction';
 import {IUser} from '../models/interfaces/IUser';
@@ -60,7 +60,9 @@ const initialState: IState = {
 const storeReducer = createReducer(
   initialState,
   on(starToggler, (state, characterName) => starCharacterReducer(state, characterName)),
-  on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state))
+  on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state)),
+  on(addMoney, (state, moneyType) => addMoneyReducer(state, moneyType)),
+  on(deductMoney, (state, moneyType) => deductMoneyReducer(state, moneyType))
 );
 
 const starCharacterReducer = (state, {characterName}) => {
@@ -92,6 +94,30 @@ const addRandomHeroOnInitReducer = state => {
         ...state.heroesList[characterName],
         obtained: !obtainedToggle
       }
+    }
+  };
+};
+
+const addMoneyReducer = (state, {moneyType, amount}) => {
+  const x = state.money[moneyType] + amount;
+
+  return {
+    ...state,
+    money: {
+      ...state.money,
+      [moneyType]: x
+    }
+  };
+};
+
+const deductMoneyReducer = (state, {moneyType, amount}) => {
+  const x = state.money[moneyType] - amount;
+
+  return {
+    ...state,
+    money: {
+      ...state.money,
+      [moneyType]: x
     }
   };
 };

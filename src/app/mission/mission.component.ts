@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AppService} from '../app.service';
+import {Store} from '@ngrx/store';
+import {addMoney} from '../store/store.actions';
 
 // You can start mission here. By comparing team CP and enemy CP winner is selected.
 // Fight lasts maximally 30 seconds. Bigger advantage = shorter fight time.
@@ -15,7 +17,7 @@ export class MissionComponent implements OnInit {
   teamCP: number;
   enemyCP = 100;
 
-  constructor(private appService: AppService) {
+  constructor(private store: Store, private appService: AppService) {
   }
 
   ngOnInit(): void {
@@ -26,5 +28,9 @@ export class MissionComponent implements OnInit {
     this.teamCP > this.enemyCP
       ? console.log('Wygrałeś')
       : console.log('Przegrałeś');
+  }
+
+  collectAFKMoney() {
+    this.store.dispatch(addMoney({moneyType: 'gold', amount: 12}));
   }
 }

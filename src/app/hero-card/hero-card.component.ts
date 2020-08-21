@@ -13,7 +13,6 @@ import {Observable} from 'rxjs';
 })
 export class HeroCardComponent implements OnInit {
   @Input() hero: Ihero;
-  store$: Observable<any>;
   isStarred: boolean;
   faction = Faction;
   lvlModificator = 0.25;
@@ -25,9 +24,7 @@ export class HeroCardComponent implements OnInit {
     return Math.floor((lvlCurrent * lvlModificator) + (atk + def));
   }
 
-  constructor(private store: Store<any>) {
-    this.store$ = store.pipe(select('store'));
-  }
+  constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
     this.isStarred = this.hero.favorite;
