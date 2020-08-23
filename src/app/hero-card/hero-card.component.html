@@ -15,6 +15,10 @@
     </p>
   </mat-card-content>
   <mat-card-actions>
+    <button mat-raised-button (click)="buyCharacter()">
+      <mat-icon aria-hidden="false" aria-label="Buy character icon">shop</mat-icon>
+    </button>
+
     <button mat-raised-button (click)="starToggle()" [ngClass]="isStarred ? 'star-active' : null">
       <mat-icon aria-hidden="false" aria-label="Star character icon">star</mat-icon>
     </button>
@@ -29,6 +33,7 @@
           <mat-icon>insights</mat-icon>
           <span>Current CP : {{currentCP}}</span>
         </button>
+
         <button class="green" mat-menu-item>
           <mat-icon>face</mat-icon>
           <span>Obtained?</span>

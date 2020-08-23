@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Ihero} from '../hero-card/Ihero';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {select, State} from '@ngrx/store';
 import {IState} from '../store/store.reducer';
 
@@ -9,16 +9,17 @@ import {IState} from '../store/store.reducer';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.css']
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit, OnDestroy {
   heroes: Ihero[] = [];
   store$: Observable<IState>;
+  sub: Subscription;
 
   constructor(private store: State<IState>) {
     this.store$ = store.pipe(select('store'));
   }
 
   ngOnInit(): void {
-    this.store$.subscribe(store => {
+    this.sub = this.store$.subscribe(store => {
       const {heroesList} = store;
       const heroesArray = [];
 
@@ -30,5 +31,9 @@ export class OverviewComponent implements OnInit {
 
       this.heroes = heroesArray;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

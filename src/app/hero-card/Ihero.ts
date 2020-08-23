@@ -1,4 +1,5 @@
 import {Faction} from '../models/enums/faction';
+import {IMoney} from '../models/interfaces/IResources';
 
 export interface Ihero {
   name: string;
@@ -8,6 +9,7 @@ export interface Ihero {
   atk: number;
   def: number;
   avatarURL: string;
+  price: IMoney;
   description?: string;
   favorite?: boolean;
 }

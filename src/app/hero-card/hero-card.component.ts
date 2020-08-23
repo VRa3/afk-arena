@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from 
 import {Ihero} from './Ihero';
 import {Faction} from '../models/enums/faction';
 import {select, Store} from '@ngrx/store';
-import {starToggler} from '../store/store.actions';
+import {buyCharacter, deductMoney, starToggler} from '../store/store.actions';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -32,5 +32,9 @@ export class HeroCardComponent implements OnInit {
 
   starToggle() {
     this.store.dispatch(starToggler({characterName: this.hero.name}));
+  }
+
+  buyCharacter() {
+    this.store.dispatch(buyCharacter({characterName: this.hero.name, price: this.hero.price}));
   }
 }

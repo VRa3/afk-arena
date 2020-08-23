@@ -8,7 +8,6 @@ import {map} from 'rxjs/operators';
 })
 export class AppService {
   store$: Observable<any>;
-
   constructor(private store: Store<any>) {
   }
 
@@ -40,6 +39,8 @@ export class AppService {
         }
       }
     });
+
+    sub.unsubscribe();
 
     return amount;
   }
