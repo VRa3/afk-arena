@@ -1,5 +1,5 @@
-<p>shop works!</p>
+<div *ngIf="heroes.length === 0">Actually shop is empty, come back later!</div>
 
 <div>
-  <app-hero-card *ngFor="let hero of heroes" [hero]="hero"></app-hero-card>
+  <app-hero-card *ngFor="let hero of heroes" [hero]="hero" [ableToBuy]="true"></app-hero-card>
 </div>

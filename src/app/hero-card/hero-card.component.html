@@ -15,7 +15,7 @@
     </p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="buyCharacter()">
+    <button *ngIf="ableToBuy" mat-raised-button (click)="buyCharacter()">
       <mat-icon aria-hidden="false" aria-label="Buy character icon">shop</mat-icon>
     </button>
 

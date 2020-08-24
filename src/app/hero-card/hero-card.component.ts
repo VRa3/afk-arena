@@ -13,6 +13,7 @@ import {Observable} from 'rxjs';
 })
 export class HeroCardComponent implements OnInit {
   @Input() hero: Ihero;
+  @Input() ableToBuy: boolean;
   isStarred: boolean;
   faction = Faction;
   lvlModificator = 0.25;

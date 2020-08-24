@@ -1,7 +1,0 @@
-.heroes-list {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: auto auto;
-  justify-content: flex-start;
-  grid-gap: 30px;
-}
