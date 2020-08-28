@@ -19,6 +19,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
 import { MissionComponent } from './mission/mission.component';
 import {AppService} from './app.service';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreEffects} from './store/store.effects';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import {AppService} from './app.service';
     MatIconModule,
     AppRoutingModule,
     StoreModule.forRoot({store: reducer}),
+    EffectsModule.forRoot([StoreEffects]),
     // StoreDevtoolsModule.instrument({maxAge: 25}),
     MatTabsModule,
     MatMenuModule

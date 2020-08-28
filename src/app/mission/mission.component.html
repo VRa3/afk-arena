@@ -6,4 +6,9 @@
   <div>
     <button (click)="collectAFKMoney()">collect money</button>
   </div>
+
+  <div *ngIf="timeToEndBattle > 0">
+    <h1>Fight in progress</h1>
+    {{timeToEndBattle}}
+  </div>
 </div>
