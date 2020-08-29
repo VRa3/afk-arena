@@ -2,7 +2,7 @@ import {AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit} from 
 import {select, State} from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs';
 import {IState} from '../store/store.reducer';
-import {Ihero} from '../hero-card/Ihero';
+import {IHero} from '../hero-card/IHero';
 import {AppService} from '../app.service';
 
 @Component({
@@ -11,7 +11,7 @@ import {AppService} from '../app.service';
   styleUrls: ['./my-team.component.css']
 })
 export class MyTeamComponent implements OnInit, OnDestroy, AfterViewChecked {
-  myTeam: Ihero[] = [];
+  myTeam: IHero[] = [];
   teamPower = 0;
   teamMembers = [];
   store$: Observable<IState>;

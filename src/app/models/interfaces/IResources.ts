@@ -1,10 +1,5 @@
-export interface IMoney {
-  gold: number;
-  silver: number;
-  copper: number;
-}
-
 export interface IResources {
-  money: IMoney;
-  heroes: any[];
+  gold: number;
+  experience: number;
+  magicEssence: number;
 }

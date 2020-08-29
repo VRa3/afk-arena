@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {IUser} from '../../models/interfaces/IUser';
-import {IMoney} from '../../models/interfaces/IResources';
+import {IResources} from '../../models/interfaces/IResources';
 
 @Component({
   selector: 'app-bottom-bar',
@@ -9,11 +9,11 @@ import {IMoney} from '../../models/interfaces/IResources';
   encapsulation: ViewEncapsulation.None
 })
 export class BottomBarComponent implements OnInit {
-  @Input() money: IMoney;
+  @Input() resources: IResources;
 
   constructor() {}
 
   ngOnInit(): void {
-
+    console.log(this.resources);
   }
 }

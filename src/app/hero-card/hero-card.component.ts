@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {Ihero} from './Ihero';
+import {IHero} from './IHero';
 import {Faction} from '../models/enums/faction';
 import {select, Store} from '@ngrx/store';
-import {buyCharacter, deductMoney, starToggler} from '../store/store.actions';
+import {buyCharacter, deductResources, starToggler} from '../store/store.actions';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
   encapsulation: ViewEncapsulation.None
 })
 export class HeroCardComponent implements OnInit {
-  @Input() hero: Ihero;
+  @Input() hero: IHero;
   @Input() ableToBuy: boolean;
   @Input() upgradeable: boolean;
   isStarred: boolean;

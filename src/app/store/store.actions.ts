@@ -1,6 +1,6 @@
 import {createAction, props} from '@ngrx/store';
-import {Ihero} from '../hero-card/Ihero';
-import {IMoney} from '../models/interfaces/IResources';
+import {IHero} from '../hero-card/IHero';
+import {IResources} from '../models/interfaces/IResources';
 
 const actions = {
   RESOURCES_ADD_MONEY: '[RESOURCES] Add money',
@@ -11,7 +11,7 @@ const actions = {
 };
 
 export const starToggler = createAction(actions.CHARACTER_STAR_TOGGLE, props<{characterName: string}>());
-export const buyCharacter = createAction(actions.CHARACTER_BUY, props<{characterName: string; price: IMoney}>());
+export const buyCharacter = createAction(actions.CHARACTER_BUY, props<{characterName: string; price: IResources}>());
 export const addRandomHeroOnInit = createAction(actions.APP_GIVE_RANDOM_HERO);
-export const addMoney = createAction(actions.RESOURCES_ADD_MONEY, props<{moneyType: string; amount: number}>());
-export const deductMoney = createAction(actions.RESOURCES_DEDUCT_MONEY, props<{moneyType: string; amount: number}>());
+export const addResources = createAction(actions.RESOURCES_ADD_MONEY, props<{resourceType: string; amount: number}>());
+export const deductResources = createAction(actions.RESOURCES_DEDUCT_MONEY, props<{resourceType: string; amount: number}>());

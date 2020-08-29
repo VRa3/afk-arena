@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, Effect, ofType} from '@ngrx/effects';
-import {addMoney, deductMoney} from './store.actions';
+import {addResources, deductResources} from './store.actions';
 import {map, mergeMap, tap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 
@@ -10,7 +10,7 @@ import {Store} from '@ngrx/store';
 export class StoreEffects {
   @Effect({dispatch: false})
   addMoney$ = this.actions$.pipe(
-    ofType(addMoney),
+    ofType(addResources),
     tap(() => console.log('addMoney Effect'))
     );
 

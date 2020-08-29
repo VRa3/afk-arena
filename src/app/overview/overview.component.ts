@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Ihero} from '../hero-card/Ihero';
+import {IHero} from '../hero-card/IHero';
 import {Observable, Subscription} from 'rxjs';
 import {select, State} from '@ngrx/store';
 import {IState} from '../store/store.reducer';
@@ -10,7 +10,7 @@ import {IState} from '../store/store.reducer';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit, OnDestroy {
-  heroes: Ihero[] = [];
+  heroes: IHero[] = [];
   store$: Observable<IState>;
   sub: Subscription;
 

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AppService} from '../app.service';
 import {Store} from '@ngrx/store';
-import {addMoney} from '../store/store.actions';
+import {addResources} from '../store/store.actions';
 import {MissionService} from './mission.service';
 import {interval, of, range} from 'rxjs';
 import {delay, take, timeout} from 'rxjs/operators';
@@ -46,12 +46,12 @@ export class MissionComponent implements OnInit {
       next: data => this.timeLeft = this.timeAmount - (data + 1),
       complete: () => {
         this.timeLeft = null;
-        this.store.dispatch(addMoney({moneyType: 'gold', amount: 44}));
+        this.store.dispatch(addResources({resourceType: 'gold', amount: 44}));
       }
     });
   }
 
   collectAFKMoney() {
-    this.store.dispatch(addMoney({moneyType: 'gold', amount: 12}));
+    this.store.dispatch(addResources({resourceType: 'gold', amount: 12}));
   }
 }

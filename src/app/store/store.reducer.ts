@@ -1,15 +1,17 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {addMoney, addRandomHeroOnInit, buyCharacter, deductMoney, starToggler} from './store.actions';
-import {Ihero} from '../hero-card/Ihero';
+import {addResources, addRandomHeroOnInit, buyCharacter, deductResources, starToggler} from './store.actions';
+import {IHero} from '../hero-card/IHero';
 import {Faction} from '../models/enums/faction';
 import {IUser} from '../models/interfaces/IUser';
-import {IMoney} from '../models/interfaces/IResources';
+import {IResources} from '../models/interfaces/IResources';
 import {Ascension} from '../models/enums/ascension';
 
 export interface IState {
-  heroesList: {};
-  money: IMoney;
+  heroesList: {
+    [key: string]: IHero
+  };
   playerLvl: number;
+  resources: IResources;
 }
 
 const initialState: IState = {
@@ -25,11 +27,7 @@ const initialState: IState = {
       description: `For Angelo, music and verse are his very heartbeat. Poetry and prose are the breath from his lips, and beauty in all its
       forms is the meaning of life. His musical gifts are such that the people say he was granted them by The Light Itself.`,
       favorite: false,
-      price: {
-        gold: 9,
-        silver: 0,
-        copper: 0
-      },
+      price: 9,
       ascensionLvl: Ascension.rare
     },
     Lucius: {
@@ -43,11 +41,7 @@ const initialState: IState = {
       description: `Lucius is a noble paladin of the Lightbearers faction. His main role is to protect allies with healing and powerful
       shields that can absorb enemy damage.`,
       favorite: false,
-      price: {
-        gold: 9,
-        silver: 0,
-        copper: 0
-      },
+      price: 9,
       ascensionLvl: Ascension.elite
     },
     Shemira: {
@@ -61,11 +55,7 @@ const initialState: IState = {
       description: `Shemira is a very powerful mage damage dealer. Her Tortured Souls ability can absolutely demolish enemy teams as not
       only does it do high damage, but it also hits every single enemy on the battlefield at the same time.`,
       favorite: false,
-      price: {
-        gold: 9,
-        silver: 0,
-        copper: 0
-      },
+      price: 9,
       ascensionLvl: Ascension.elite
     },
     Rowan: {
@@ -78,20 +68,16 @@ const initialState: IState = {
       avatarURL: './assets/heroes-avatars/Rowan_avatar.png',
       description: `Somewhere far away, Rowan hoisted his bag and walked one step closer to the destiny he would create for himself.`,
       favorite: false,
-      price: {
-        gold: 9,
-        silver: 0,
-        copper: 0
-      },
+      price: 9,
       ascensionLvl: Ascension.elite
     }
   },
-  money: {
-    gold: 100,
-    silver: 0,
-    copper: 0
-  },
   playerLvl: 1,
+  resources: {
+    gold: 100,
+    experience: 1,
+    magicEssence: 2,
+  }
 };
 
 const storeReducer = createReducer(
@@ -99,8 +85,8 @@ const storeReducer = createReducer(
   on(starToggler, (state, characterName) => starCharacterReducer(state, characterName)),
   on(buyCharacter, (state, characterName) => buyCharacterReducer(state, characterName)),
   on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state)),
-  on(addMoney, (state, moneyType) => addMoneyReducer(state, moneyType)),
-  on(deductMoney, (state, moneyType) => deductMoneyReducer(state, moneyType))
+  on(addResources, (state, resourceType) => addMoneyReducer(state, resourceType)),
+  on(deductResources, (state, resourceType) => deductMoneyReducer(state, resourceType))
 );
 
 const starCharacterReducer = (state, {characterName}) => {
@@ -136,39 +122,39 @@ const addRandomHeroOnInitReducer = state => {
   };
 };
 
-const addMoneyReducer = (state, {moneyType, amount}) => {
-  const x = state.money[moneyType] + amount;
+const addMoneyReducer = (state, {resourceType, amount}) => {
+  const x = state.resources[resourceType] + amount;
 
   return {
     ...state,
-    money: {
-      ...state.money,
-      [moneyType]: x
+    resources: {
+      ...state.resources,
+      [resourceType]: x
     }
   };
 };
 
-const deductMoneyReducer = (state, {moneyType, amount}) => {
-  const x = state.money[moneyType] - amount;
+const deductMoneyReducer = (state, {resourceType, amount}) => {
+  const x = state.resources[resourceType] - amount;
 
   return {
     ...state,
-    money: {
-      ...state.money,
-      [moneyType]: x
+    resources: {
+      ...state.resources,
+      [resourceType]: x
     }
   };
 };
 
 const buyCharacterReducer = (state, {characterName, price}) => {
-  const moneyObject = Object.keys(state.money).reduce((acc, curr) => {
-    acc[curr] = state.money[curr] - price[curr];
-    return acc;
-  }, {});
+  const resourceObj = {
+    ...state.resources,
+    gold: state.resources.gold - price
+  };
 
   return {
     ...state,
-    money: moneyObject,
+    resources: resourceObj,
     heroesList: {
       ...state.heroesList,
       [characterName]: {

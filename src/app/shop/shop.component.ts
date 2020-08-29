@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, State} from '@ngrx/store';
 import {IState} from '../store/store.reducer';
-import {Ihero} from '../hero-card/Ihero';
+import {IHero} from '../hero-card/IHero';
 import {Observable, Subscription} from 'rxjs';
 
 @Component({
@@ -10,7 +10,7 @@ import {Observable, Subscription} from 'rxjs';
   styleUrls: ['./shop.component.css']
 })
 export class ShopComponent implements OnInit, OnDestroy {
-  heroes: Ihero[] = [];
+  heroes: IHero[] = [];
   store$: Observable<IState>;
   sub: Subscription;
 

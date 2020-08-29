@@ -4,7 +4,7 @@ import {IState} from './store/store.reducer';
 import {Observable} from 'rxjs';
 import {IUser} from './models/interfaces/IUser';
 import {addRandomHeroOnInit} from './store/store.actions';
-import {IMoney} from './models/interfaces/IResources';
+import {IResources} from './models/interfaces/IResources';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ import {IMoney} from './models/interfaces/IResources';
 export class AppComponent implements OnInit {
   title = 'tour-game';
   store$: Observable<any>;
-  money: IMoney;
+  resources: IResources;
 
   constructor(private store: Store<any>) {
     this.store$ = store.pipe(select('store'));
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(addRandomHeroOnInit());
 
     this.store$.subscribe(store => {
-      this.money = store.money;
+      this.resources = store.resources;
     });
   }
 }
