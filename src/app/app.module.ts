@@ -14,14 +14,15 @@ import {ShopComponent} from './shop/shop.component';
 import {StoreModule} from '@ngrx/store';
 import {reducer} from './store/store.reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
+import {BottomBarComponent} from './components/bottom-bar/bottom-bar.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
-import { MissionComponent } from './mission/mission.component';
+import {MissionComponent} from './mission/mission.component';
 import {AppService} from './app.service';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreEffects} from './store/store.effects';
-import { AscensionBadgeComponent } from './components/ascension-badge/ascension-badge.component';
+import {AscensionBadgeComponent} from './components/ascension-badge/ascension-badge.component';
+import {MissionService} from './mission/mission.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { AscensionBadgeComponent } from './components/ascension-badge/ascension-
     MatTabsModule,
     MatMenuModule
   ],
-  providers: [AppService],
+  providers: [AppService, MissionService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

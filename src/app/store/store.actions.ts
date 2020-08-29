@@ -11,7 +11,7 @@ const actions = {
 };
 
 export const starToggler = createAction(actions.CHARACTER_STAR_TOGGLE, props<{characterName: string}>());
-export const buyCharacter = createAction(actions.CHARACTER_BUY, props<{characterName: string; price: IResources}>());
+export const buyCharacter = createAction(actions.CHARACTER_BUY, props<{characterName: string; price: number}>());
 export const addRandomHeroOnInit = createAction(actions.APP_GIVE_RANDOM_HERO);
 export const addResources = createAction(actions.RESOURCES_ADD_MONEY, props<{resourceType: string; amount: number}>());
 export const deductResources = createAction(actions.RESOURCES_DEDUCT_MONEY, props<{resourceType: string; amount: number}>());

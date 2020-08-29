@@ -4,12 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MissionService {
-
-  constructor() { }
+  constructor() {}
 
   getFightResults(playerTeam, enemyTeam): any {
-    const playerIsWinner = playerTeam > enemyTeam;
-    const modificator = (playerTeam / enemyTeam).toFixed(2);
+    const playerIsWinner: boolean = playerTeam > enemyTeam;
+    const modificator: string = (playerTeam / enemyTeam).toFixed(2);
 
     return {
       playerIsWinner,

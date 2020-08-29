@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -8,8 +8,11 @@ import {map} from 'rxjs/operators';
 })
 export class AppService {
   store$: Observable<any>;
-  constructor(private store: Store<any>) {
-  }
+  // tslint:disable-next-line:variable-name
+  private _currentStageSource = new BehaviorSubject(1);
+  currentStage$ = this._currentStageSource.asObservable();
+
+  constructor(private store: Store<any>) {}
 
   countTeamCP(): number {
     this.store$ = this.store.pipe(select('store', 'heroesList'));
@@ -45,4 +48,7 @@ export class AppService {
     return amount;
   }
 
+  advancePlayerToNextStage(stage) {
+    this._currentStageSource.next(stage);
+  }
 }

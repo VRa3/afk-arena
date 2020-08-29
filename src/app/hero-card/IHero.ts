@@ -11,6 +11,7 @@ export interface IHero {
   def: number;
   avatarURL: string;
   price: number;
+  obtained: boolean;
   ascensionLvl: Ascension;
   description?: string;
   favorite?: boolean;

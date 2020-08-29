@@ -13,7 +13,6 @@ import {AppService} from '../app.service';
 export class MyTeamComponent implements OnInit, OnDestroy, AfterViewChecked {
   myTeam: IHero[] = [];
   teamPower = 0;
-  teamMembers = [];
   store$: Observable<IState>;
   sub: Subscription;
 
@@ -26,10 +25,8 @@ export class MyTeamComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.myTeam = [];
 
       for (const hero in store.heroesList) {
-        if (store.heroesList.hasOwnProperty(hero)) {
-          if (store.heroesList[hero].obtained) {
-            this.myTeam.push(store.heroesList[hero]);
-          }
+        if (store.heroesList.hasOwnProperty(hero) && store.heroesList[hero].obtained) {
+          this.myTeam.push(store.heroesList[hero]);
         }
       }
     });

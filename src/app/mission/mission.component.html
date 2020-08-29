@@ -7,6 +7,8 @@
     <button (click)="collectAFKMoney()">collect money</button>
   </div>
 
+  <p>Current progress: Chapter: 1, stage: {{currentChapter}}</p>
+
   <div *ngIf="timeToEndBattle > 0">
     <h1>Fight in progress</h1>
     {{timeToEndBattle}}
