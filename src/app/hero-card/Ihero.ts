@@ -1,5 +1,6 @@
 import {Faction} from '../models/enums/faction';
 import {IMoney} from '../models/interfaces/IResources';
+import {Ascension} from '../models/enums/ascension';
 
 export interface Ihero {
   name: string;
@@ -10,6 +11,7 @@ export interface Ihero {
   def: number;
   avatarURL: string;
   price: IMoney;
+  ascensionLvl: Ascension;
   description?: string;
   favorite?: boolean;
 }

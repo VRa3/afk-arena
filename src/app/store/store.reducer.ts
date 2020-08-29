@@ -4,7 +4,7 @@ import {Ihero} from '../hero-card/Ihero';
 import {Faction} from '../models/enums/faction';
 import {IUser} from '../models/interfaces/IUser';
 import {IMoney} from '../models/interfaces/IResources';
-import {log} from 'util';
+import {Ascension} from '../models/enums/ascension';
 
 export interface IState {
   heroesList: {};
@@ -14,6 +14,24 @@ export interface IState {
 
 const initialState: IState = {
   heroesList: {
+    Angelo: {
+      name: 'Angelo',
+      lvlCap: 120,
+      lvlCurrent: 1,
+      faction: Faction.Lightbearers,
+      atk: 21,
+      def: 18,
+      avatarURL: './assets/heroes-avatars/Angelo_avatar.jpg',
+      description: `For Angelo, music and verse are his very heartbeat. Poetry and prose are the breath from his lips, and beauty in all its
+      forms is the meaning of life. His musical gifts are such that the people say he was granted them by The Light Itself.`,
+      favorite: false,
+      price: {
+        gold: 9,
+        silver: 0,
+        copper: 0
+      },
+      ascensionLvl: Ascension.rare
+    },
     Lucius: {
       name: 'Lucius',
       lvlCap: 240,
@@ -29,7 +47,8 @@ const initialState: IState = {
         gold: 9,
         silver: 0,
         copper: 0
-      }
+      },
+      ascensionLvl: Ascension.elite
     },
     Shemira: {
       name: 'Shemira',
@@ -46,7 +65,8 @@ const initialState: IState = {
         gold: 9,
         silver: 0,
         copper: 0
-      }
+      },
+      ascensionLvl: Ascension.elite
     },
     Rowan: {
       name: 'Rowan',
@@ -62,7 +82,8 @@ const initialState: IState = {
         gold: 9,
         silver: 0,
         copper: 0
-      }
+      },
+      ascensionLvl: Ascension.elite
     }
   },
   money: {

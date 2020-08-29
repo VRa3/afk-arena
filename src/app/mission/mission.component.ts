@@ -32,7 +32,6 @@ export class MissionComponent implements OnInit {
   constructor(private store: Store, private appService: AppService, private missionService: MissionService) {
   }
 
-
   ngOnInit(): void {
     this.teamCP = this.appService.countTeamCP();
   }

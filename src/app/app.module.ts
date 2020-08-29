@@ -21,6 +21,7 @@ import { MissionComponent } from './mission/mission.component';
 import {AppService} from './app.service';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreEffects} from './store/store.effects';
+import { AscensionBadgeComponent } from './components/ascension-badge/ascension-badge.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {StoreEffects} from './store/store.effects';
     ShopComponent,
     BottomBarComponent,
     MissionComponent,
+    AscensionBadgeComponent,
   ],
   imports: [
     BrowserModule,

@@ -3,8 +3,15 @@
     <div mat-card-avatar class="example-header-image">
       <img class="hero-card__avatar" src="{{hero.avatarURL}}" alt="{{hero.name}} avatar">
     </div>
-    <mat-card-title>{{hero.name}}</mat-card-title>
+
+    <mat-card-title *ngIf="upgradeable; else notUpgradeableTitle">
+      {{hero.name}} - {{hero.lvlCurrent}}lvl
+    </mat-card-title>
+    <ng-template #notUpgradeableTitle><mat-card-title>{{hero.name}}</mat-card-title></ng-template>
+
     <mat-card-subtitle>{{faction[hero.faction]}}</mat-card-subtitle>
+
+    <app-ascension-badge *ngIf="upgradeable" class="hero-card__ascension-badge" [ascensionLvl]="hero.ascensionLvl"></app-ascension-badge>
   </mat-card-header>
   <mat-card-content>
     <p>

@@ -1,5 +1,5 @@
 <h1>Actually my team has {{myTeam.length}} heroes with total {{teamPower}} CP</h1>
 
 <div class="heroes-list" *ngIf="myTeam.length">
-  <app-hero-card *ngFor="let hero of myTeam" [hero]="hero"></app-hero-card>
+  <app-hero-card *ngFor="let hero of myTeam" [hero]="hero" [upgradeable]="true"></app-hero-card>
 </div>
