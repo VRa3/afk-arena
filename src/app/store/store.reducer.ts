@@ -85,7 +85,7 @@ const storeReducer = createReducer(
   on(starToggler, (state, characterName) => starCharacterReducer(state, characterName)),
   on(buyCharacter, (state, characterName) => buyCharacterReducer(state, characterName)),
   on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state)),
-  on(addResources, (state, resourceType) => addMoneyReducer(state, resourceType)),
+  on(addResources, (state, resourceType) => addResourceReducer(state, resourceType)),
   on(deductResources, (state, resourceType) => deductMoneyReducer(state, resourceType))
 );
 
@@ -122,14 +122,21 @@ const addRandomHeroOnInitReducer = state => {
   };
 };
 
-const addMoneyReducer = (state, {resourceType, amount}) => {
-  const x = state.resources[resourceType] + amount;
+const addResourceReducer = (state, resourceType) => {
+  const resourcesObj = {
+    ...state.resources
+  };
+
+  for (const resource in resourceType) {
+    if (resourceType.hasOwnProperty(resource)) {
+      resourcesObj[resource] = (+resourcesObj[resource] + +resourceType[resource]).toFixed(2);
+    }
+  }
 
   return {
     ...state,
     resources: {
-      ...state.resources,
-      [resourceType]: x
+      ...resourcesObj
     }
   };
 };

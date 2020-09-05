@@ -1,5 +1,4 @@
 import {Faction} from '../models/enums/faction';
-import {IResources} from '../models/interfaces/IResources';
 import {Ascension} from '../models/enums/ascension';
 
 export interface IHero {
@@ -11,8 +10,8 @@ export interface IHero {
   def: number;
   avatarURL: string;
   price: number;
-  obtained: boolean;
   ascensionLvl: Ascension;
   description?: string;
   favorite?: boolean;
+  obtained?: boolean;
 }

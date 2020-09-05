@@ -18,26 +18,45 @@ import {take} from 'rxjs/operators';
 })
 export class MissionComponent implements OnInit, OnDestroy {
   teamCP: number;
-  enemyCP = 100;
-  currentFight: any;
+  enemyCP: number;
+  currentFightResults: any;
   timeAmount: number;
   timeBase: number;
   timeToEndBattle = 0;
   currentChapter: number;
-  sub: Subscription;
+  subManager = new Subscription();
+  stages: number[];
+  rewards: any;
 
   constructor(private store: Store, private appService: AppService, private missionService: MissionService) {
   }
 
   ngOnInit(): void {
     this.teamCP = this.appService.countTeamCP();
-    this.sub = this.appService.currentStage$.subscribe(data => {
+
+    this.subManager.add(this.missionService.rewards$.subscribe(stagesAndRewards => {
+        const {stages, goldRewards, experienceRewards, magicEssenceRewards} = stagesAndRewards as any;
+
+        this.stages = stages;
+        this.rewards = {
+          goldRewards,
+          experienceRewards,
+          magicEssenceRewards
+        };
+        console.log(this.rewards);
+      })
+    );
+
+    this.missionService.generateStagesAndRewards();
+
+    this.subManager.add(this.appService.currentStage$.subscribe(data => {
       this.currentChapter = data;
-    });
+      this.enemyCP = this.stages[this.currentChapter];
+    }));
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.subManager.unsubscribe();
   }
 
   startFight() {
@@ -46,17 +65,21 @@ export class MissionComponent implements OnInit, OnDestroy {
     }
 
     this.timeBase = 3;
-    this.currentFight = this.missionService.getFightResults(this.teamCP, this.enemyCP);
-    this.timeAmount = Math.floor(this.timeBase / this.currentFight.modificator);
+    this.currentFightResults = this.missionService.getFightResults(this.teamCP, this.enemyCP);
+    this.timeAmount = Math.floor(this.timeBase / this.currentFightResults.timeModificator);
 
     this.timeToEndBattle = this.timeAmount;
     interval(1000).pipe(take(this.timeAmount)).subscribe({
       next: data => this.timeToEndBattle = this.timeAmount - (data + 1),
       complete: () => {
         this.timeToEndBattle = null;
-        this.store.dispatch(addResources({resourceType: 'gold', amount: 44}));
+        this.store.dispatch(addResources({
+          gold: this.rewards.goldRewards[this.currentChapter - 1],
+          experience: this.rewards.experienceRewards[this.currentChapter - 1],
+          magicEssence: this.rewards.magicEssenceRewards[this.currentChapter - 1]
+        }));
 
-        if (this.currentFight.playerIsWinner) {
+        if (this.currentFightResults.playerIsWinner) {
           this.appService.advancePlayerToNextStage(this.currentChapter + 1);
         }
       }
@@ -64,6 +87,6 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   collectAFKMoney() {
-    this.store.dispatch(addResources({resourceType: 'gold', amount: 12}));
+    this.store.dispatch(addResources({gold: 5}));
   }
 }

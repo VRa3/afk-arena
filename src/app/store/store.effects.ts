@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Actions, createEffect, Effect, ofType} from '@ngrx/effects';
-import {addResources, deductResources} from './store.actions';
-import {map, mergeMap, tap} from 'rxjs/operators';
+import {Actions, Effect, ofType} from '@ngrx/effects';
+import {addResources} from './store.actions';
+import {tap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 
 
