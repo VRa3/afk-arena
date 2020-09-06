@@ -1,8 +1,7 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {addResources, addRandomHeroOnInit, buyCharacter, deductResources, starToggler} from './store.actions';
+import {addResources, addRandomHeroOnInit, buyCharacter, deductResources, starToggler, levelUpCharacter} from './store.actions';
 import {IHero} from '../hero-card/IHero';
 import {Faction} from '../models/enums/faction';
-import {IUser} from '../models/interfaces/IUser';
 import {IResources} from '../models/interfaces/IResources';
 import {Ascension} from '../models/enums/ascension';
 
@@ -84,12 +83,13 @@ const storeReducer = createReducer(
   initialState,
   on(starToggler, (state, characterName) => starCharacterReducer(state, characterName)),
   on(buyCharacter, (state, characterName) => buyCharacterReducer(state, characterName)),
+  on(levelUpCharacter, (state, characterName) => levelUpCharacterReducer(state, characterName)),
   on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state)),
   on(addResources, (state, resourceType) => addResourceReducer(state, resourceType)),
   on(deductResources, (state, resourceType) => deductMoneyReducer(state, resourceType))
 );
 
-const starCharacterReducer = (state, {characterName}) => {
+const starCharacterReducer = (state: IState, {characterName}) => {
   const favoriteToggle = state.heroesList[characterName].favorite;
 
   return {
@@ -104,7 +104,7 @@ const starCharacterReducer = (state, {characterName}) => {
   };
 };
 
-const addRandomHeroOnInitReducer = state => {
+const addRandomHeroOnInitReducer = (state: IState) => {
   const allHeroesNames = Object.keys(state.heroesList);
   const randomIndex = Math.floor(Math.random() * allHeroesNames.length);
   const characterName = allHeroesNames[randomIndex];
@@ -122,7 +122,7 @@ const addRandomHeroOnInitReducer = state => {
   };
 };
 
-const addResourceReducer = (state, resourceType) => {
+const addResourceReducer = (state: IState, resourceType) => {
   const resourcesObj = {
     ...state.resources
   };
@@ -141,7 +141,7 @@ const addResourceReducer = (state, resourceType) => {
   };
 };
 
-const deductMoneyReducer = (state, {resourceType, amount}) => {
+const deductMoneyReducer = (state: IState, {resourceType, amount}) => {
   const x = state.resources[resourceType] - amount;
 
   return {
@@ -153,7 +153,7 @@ const deductMoneyReducer = (state, {resourceType, amount}) => {
   };
 };
 
-const buyCharacterReducer = (state, {characterName, price}) => {
+const buyCharacterReducer = (state: IState, {characterName, price}) => {
   const resourceObj = {
     ...state.resources,
     gold: state.resources.gold - price
@@ -169,6 +169,23 @@ const buyCharacterReducer = (state, {characterName, price}) => {
         obtained: true
       }
     }
+  };
+};
+
+const levelUpCharacterReducer = (state: IState, {characterName}) => {
+  const incrementHeroLvl = state.heroesList[characterName].lvlCurrent + 1;
+
+  const updatedHeroesList = {
+    ...state.heroesList,
+    [characterName]: {
+      ...state.heroesList[characterName],
+      lvlCurrent: incrementHeroLvl
+    }
+  };
+
+  return {
+    ...state,
+    heroesList: updatedHeroesList
   };
 };
 

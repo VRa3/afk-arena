@@ -2,8 +2,9 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {IHero} from './IHero';
 import {Faction} from '../models/enums/faction';
 import {Store} from '@ngrx/store';
-import {buyCharacter, starToggler} from '../store/store.actions';
+import {buyCharacter, levelUpCharacter, starToggler} from '../store/store.actions';
 import {ActivatedRoute} from '@angular/router';
+import {HeroService} from './hero.service';
 
 @Component({
   selector: 'app-hero-card',
@@ -18,16 +19,12 @@ export class HeroCardComponent implements OnInit {
   isStarred: boolean;
   canBeLeveledUp: boolean;
   faction = Faction;
-  lvlModificator = 0.25;
 
   get currentCP() {
-    const {lvlModificator} = this;
-    const {atk, def, lvlCurrent} = this.hero;
-
-    return Math.floor((lvlCurrent * lvlModificator) + (atk + def));
+    return this.heroService.getCurrentCP(this.hero);
   }
 
-  constructor(private store: Store<any>, private route: ActivatedRoute) {}
+  constructor(private store: Store<any>, private route: ActivatedRoute, private heroService: HeroService) {}
 
   ngOnInit(): void {
     const {favorite, obtained} = this.hero;
@@ -48,6 +45,6 @@ export class HeroCardComponent implements OnInit {
   }
 
   levelUp() {
-    console.log('lvl up');
+    this.store.dispatch(levelUpCharacter({characterName: this.hero.name}));
   }
 }

@@ -30,7 +30,7 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.teamCP = this.appService.countTeamCP();
+    this.appService.teamCP$.subscribe(teamPower => this.teamCP = teamPower);
 
     const stageAndRewardsSub = this.missionService.rewards$.subscribe(stagesAndRewards => {
       const {stages, goldRewards, experienceRewards, magicEssenceRewards} = stagesAndRewards as any;

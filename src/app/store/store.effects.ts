@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {addResources} from './store.actions';
+import {addRandomHeroOnInit, addResources, buyCharacter, levelUpCharacter} from './store.actions';
 import {tap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
+import {AppService} from '../app.service';
 
 
 
@@ -14,8 +15,16 @@ export class StoreEffects {
     tap(() => console.log('addMoney Effect'))
     );
 
+  @Effect({dispatch: false})
+  countTeamCP$ = this.actions$.pipe(
+    ofType(addRandomHeroOnInit, buyCharacter, levelUpCharacter),
+    tap(() => this.appService.countTeamCP())
+  );
+
+
   constructor(
     private actions$: Actions,
-    private store: Store
+    private store: Store,
+    private appService: AppService
   ) {}
 }

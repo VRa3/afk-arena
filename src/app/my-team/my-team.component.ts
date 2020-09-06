@@ -31,7 +31,7 @@ export class MyTeamComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
     });
 
-    this.teamPower = this.appService.countTeamCP();
+    this.appService.teamCP$.subscribe(teamPower => this.teamPower = teamPower);
   }
 
   ngOnDestroy(): void {
