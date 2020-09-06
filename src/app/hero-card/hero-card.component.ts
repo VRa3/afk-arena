@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {IHero} from './IHero';
 import {Faction} from '../models/enums/faction';
-import {select, Store} from '@ngrx/store';
-import {buyCharacter, deductResources, starToggler} from '../store/store.actions';
-import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {buyCharacter, starToggler} from '../store/store.actions';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-hero-card',
@@ -16,6 +16,7 @@ export class HeroCardComponent implements OnInit {
   @Input() ableToBuy: boolean;
   @Input() upgradeable: boolean;
   isStarred: boolean;
+  canBeLeveledUp: boolean;
   faction = Faction;
   lvlModificator = 0.25;
 
@@ -26,10 +27,16 @@ export class HeroCardComponent implements OnInit {
     return Math.floor((lvlCurrent * lvlModificator) + (atk + def));
   }
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<any>, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.isStarred = this.hero.favorite;
+    const {favorite, obtained} = this.hero;
+    let currentRoute = '';
+
+    this.route.url.subscribe(route => currentRoute = route[0].path);
+
+    this.isStarred = favorite;
+    this.canBeLeveledUp = obtained && currentRoute === 'my-team';
   }
 
   starToggle() {
@@ -38,5 +45,9 @@ export class HeroCardComponent implements OnInit {
 
   buyCharacter() {
     this.store.dispatch(buyCharacter({characterName: this.hero.name, price: this.hero.price}));
+  }
+
+  levelUp() {
+    console.log('lvl up');
   }
 }
