@@ -20,9 +20,7 @@ export class MissionComponent implements OnInit, OnDestroy {
   teamCP: number;
   enemyCP: number;
   currentFightResults: any;
-  timeAmount: number;
-  timeBase: number;
-  timeToEndBattle = 0;
+  timeToEndBattle: number;
   currentChapter: number;
   subManager = new Subscription();
   stages: number[];
@@ -34,25 +32,26 @@ export class MissionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.teamCP = this.appService.countTeamCP();
 
-    this.subManager.add(this.missionService.rewards$.subscribe(stagesAndRewards => {
-        const {stages, goldRewards, experienceRewards, magicEssenceRewards} = stagesAndRewards as any;
+    const stageAndRewardsSub = this.missionService.rewards$.subscribe(stagesAndRewards => {
+      const {stages, goldRewards, experienceRewards, magicEssenceRewards} = stagesAndRewards as any;
 
-        this.stages = stages;
-        this.rewards = {
-          goldRewards,
-          experienceRewards,
-          magicEssenceRewards
-        };
-        console.log(this.rewards);
-      })
-    );
+      this.stages = stages;
+      this.rewards = {
+        goldRewards,
+        experienceRewards,
+        magicEssenceRewards
+      };
+    });
 
     this.missionService.generateStagesAndRewards();
 
-    this.subManager.add(this.appService.currentStage$.subscribe(data => {
+    const currentStageSub = this.appService.currentStage$.subscribe(data => {
       this.currentChapter = data;
       this.enemyCP = this.stages[this.currentChapter];
-    }));
+    });
+
+    this.subManager.add(stageAndRewardsSub);
+    this.subManager.add(currentStageSub);
   }
 
   ngOnDestroy(): void {
@@ -64,26 +63,37 @@ export class MissionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.timeBase = 3;
-    this.currentFightResults = this.missionService.getFightResults(this.teamCP, this.enemyCP);
-    this.timeAmount = Math.floor(this.timeBase / this.currentFightResults.timeModificator);
+    this.countFightResults();
 
-    this.timeToEndBattle = this.timeAmount;
-    interval(1000).pipe(take(this.timeAmount)).subscribe({
-      next: data => this.timeToEndBattle = this.timeAmount - (data + 1),
+    interval(1000).pipe(take(this.timeToEndBattle)).subscribe({
+      next: time => this.countdownToBattleEnd(time),
       complete: () => {
         this.timeToEndBattle = null;
-        this.store.dispatch(addResources({
-          gold: this.rewards.goldRewards[this.currentChapter - 1],
-          experience: this.rewards.experienceRewards[this.currentChapter - 1],
-          magicEssence: this.rewards.magicEssenceRewards[this.currentChapter - 1]
-        }));
+
+        this.giveRewards();
 
         if (this.currentFightResults.playerIsWinner) {
           this.appService.advancePlayerToNextStage(this.currentChapter + 1);
         }
       }
     });
+  }
+
+  countdownToBattleEnd(time) {
+    this.timeToEndBattle = this.timeToEndBattle - (time + 1);
+  }
+
+  countFightResults() {
+    this.currentFightResults = this.missionService.getFightResults(this.teamCP, this.enemyCP);
+    this.timeToEndBattle = Math.floor(this.missionService.missionBaseTime / this.currentFightResults.timeModificator);
+  }
+
+  giveRewards() {
+    this.store.dispatch(addResources({
+      gold: this.rewards.goldRewards[this.currentChapter - 1],
+      experience: this.rewards.experienceRewards[this.currentChapter - 1],
+      magicEssence: this.rewards.magicEssenceRewards[this.currentChapter - 1]
+    }));
   }
 
   collectAFKMoney() {

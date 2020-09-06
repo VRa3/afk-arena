@@ -14,6 +14,5 @@ export class BottomBarComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(this.resources);
   }
 }

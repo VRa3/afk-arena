@@ -9,6 +9,7 @@ export class MissionService {
   // tslint:disable-next-line:variable-name
   _rewardsSource = new Subject();
   rewards$ = this._rewardsSource.asObservable();
+  missionBaseTime = 3;
 
   constructor() {
     this.resourcesBase = {
