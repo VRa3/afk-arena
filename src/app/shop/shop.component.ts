@@ -13,6 +13,7 @@ export class ShopComponent implements OnInit, OnDestroy {
   heroes: IHero[] = [];
   store$: Observable<IState>;
   sub: Subscription;
+  playerMoney: number = null;
 
   constructor(private store: State<IState>) {
     this.store$ = store.pipe(select('store'));
@@ -32,6 +33,7 @@ export class ShopComponent implements OnInit, OnDestroy {
       }
 
       this.heroes = heroesArray;
+      this.playerMoney = store.resources.gold;
     });
   }
 

@@ -54,7 +54,7 @@ const initialState: IState = {
       description: `Shemira is a very powerful mage damage dealer. Her Tortured Souls ability can absolutely demolish enemy teams as not
       only does it do high damage, but it also hits every single enemy on the battlefield at the same time.`,
       favorite: false,
-      price: 9,
+      price: 150,
       ascensionLvl: Ascension.elite
     },
     Rowan: {

@@ -16,6 +16,7 @@ export class HeroCardComponent implements OnInit {
   @Input() hero: IHero;
   @Input() ableToBuy: boolean;
   @Input() upgradeable: boolean;
+  @Input() shopUI: boolean;
   isStarred: boolean;
   canBeLeveledUp: boolean;
   faction = Faction;
