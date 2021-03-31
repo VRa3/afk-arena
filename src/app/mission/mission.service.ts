@@ -1,28 +1,29 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
+export interface IFightResults {
+  playerIsWinner: boolean;
+  timeModificator: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class MissionService {
-  resourcesBase: any;
+  resourcesBase = {
+    CP: 100,
+    gold: 25,
+    experience: 30,
+    magicEssence: 10
+  };
   // tslint:disable-next-line:variable-name
   _rewardsSource = new Subject();
   rewards$ = this._rewardsSource.asObservable();
   missionBaseTime = 3;
 
-  constructor() {
-    this.resourcesBase = {
-      CP: 100,
-      gold: 25,
-      experience: 30,
-      magicEssence: 10
-    };
-  }
-
-  getFightResults(playerTeam, enemyTeam): any {
+  getFightResults(playerTeam: number, enemyTeam: number): IFightResults {
     const playerIsWinner: boolean = playerTeam > enemyTeam;
-    const timeModificator: string = (playerTeam / enemyTeam).toFixed(2);
+    const timeModificator: number = +(playerTeam / enemyTeam).toFixed(2);
 
     return {
       playerIsWinner,
@@ -40,10 +41,10 @@ export class MissionService {
 
     for (let i = 0; i < 20; i++) {
       if (i < 10) {
-          CP *= 1.11;
-          gold *= 1.11;
-          experience *= 1.11;
-          magicEssence *= 1.11;
+        CP *= 1.11;
+        gold *= 1.11;
+        experience *= 1.11;
+        magicEssence *= 1.11;
       } else {
         CP *= 1.08;
         gold *= 1.08;

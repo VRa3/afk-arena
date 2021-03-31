@@ -1,13 +1,14 @@
 <div>
   <p>You CP: {{teamCP}} vs Enemy CP: {{enemyCP}}</p>
-  <div>
-    <button (click)="startFight()">start</button>
+  <div *ngIf="hasMoreChapters">
+    <button mat-flat-button color="primary" (click)="startFight()">Start</button>
   </div>
   <div>
-    <button (click)="collectAFKMoney()">collect money</button>
+    <button mat-flat-button color="accent" (click)="collectAFKMoney()">Collect resources</button>
   </div>
 
-  <p>Current progress: Chapter: 1, stage: {{currentChapter}}</p>
+  <p *ngIf="hasMoreChapters">Current progress: Chapter: 1, stage: {{currentChapter}}</p>
+  <p *ngIf="!hasMoreChapters">Congratulations, all chapters completed</p>
 
   <div *ngIf="timeToEndBattle > 0">
     <h1>Fight in progress</h1>

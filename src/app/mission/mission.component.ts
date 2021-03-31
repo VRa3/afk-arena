@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AppService} from '../app.service';
 import {Store} from '@ngrx/store';
 import {addResources} from '../store/store.actions';
-import {MissionService} from './mission.service';
+import {IFightResults, MissionService} from './mission.service';
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
@@ -19,12 +19,13 @@ import {take} from 'rxjs/operators';
 export class MissionComponent implements OnInit, OnDestroy {
   teamCP: number;
   enemyCP: number;
-  currentFightResults: any;
+  currentFightResults: IFightResults;
   timeToEndBattle: number;
   currentChapter: number;
   subManager = new Subscription();
   stages: number[];
   rewards: any;
+  hasMoreChapters = true;
 
   constructor(private store: Store, private appService: AppService, private missionService: MissionService) {
   }
@@ -48,6 +49,9 @@ export class MissionComponent implements OnInit, OnDestroy {
     const currentStageSub = this.appService.currentStage$.subscribe(data => {
       this.currentChapter = data;
       this.enemyCP = this.stages[this.currentChapter];
+      if (!this.enemyCP) {
+        this.hasMoreChapters = false;
+      }
     });
 
     this.subManager.add(stageAndRewardsSub);
@@ -97,6 +101,11 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   collectAFKMoney() {
-    this.store.dispatch(addResources({gold: 5}));
+    // to be continued, 1 hour of afk = rewards from previous chapter
+    this.store.dispatch(addResources({
+      gold: this.rewards.goldRewards[this.currentChapter - 2],
+      experience: this.rewards.experienceRewards[this.currentChapter - 2],
+      magicEssence: this.rewards.magicEssenceRewards[this.currentChapter - 2]
+    }));
   }
 }
