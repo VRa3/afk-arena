@@ -5,12 +5,14 @@ import {Store} from '@ngrx/store';
 import {buyCharacter, levelUpCharacter, starToggler} from '../store/store.actions';
 import {ActivatedRoute} from '@angular/router';
 import {HeroService} from './hero.service';
+import {starToggling} from './hero-card.animations';
 
 @Component({
   selector: 'app-hero-card',
   templateUrl: './hero-card.component.html',
   styleUrls: ['./hero-card.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  animations: starToggling
 })
 export class HeroCardComponent implements OnInit {
   @Input() hero: IHero;
@@ -20,6 +22,8 @@ export class HeroCardComponent implements OnInit {
   isStarred: boolean;
   canBeLeveledUp: boolean;
   faction = Faction;
+  isAnimating = false;
+  animationTimeout: number;
 
   get currentCP() {
     return this.heroService.getCurrentCP(this.hero);
@@ -38,7 +42,15 @@ export class HeroCardComponent implements OnInit {
   }
 
   starToggle() {
-    this.store.dispatch(starToggler({characterName: this.hero.name}));
+    if (!this.isAnimating) {
+      this.isStarred = !this.isStarred;
+      this.isAnimating = true;
+
+      this.animationTimeout = setTimeout(() => {
+        this.store.dispatch(starToggler({characterName: this.hero.name}));
+        this.isAnimating = false;
+      }, 500);
+    }
   }
 
   buyCharacter() {

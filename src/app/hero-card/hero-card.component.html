@@ -30,7 +30,7 @@
       <mat-icon aria-hidden="false" aria-label="Buy character icon">upgrade</mat-icon>
     </button>
 
-    <button (click)="starToggle()" [ngClass]="isStarred ? 'star-active' : ''" mat-raised-button >
+    <button (click)="starToggle()" [@starToggling]="isStarred" mat-raised-button >
       <mat-icon aria-hidden="false" aria-label="Star character icon">star</mat-icon>
     </button>
 
