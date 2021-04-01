@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {addRandomHeroOnInit, addResources, buyCharacter, levelUpCharacter} from './store.actions';
+import {addRandomHeroOnInit, addResources, buyCharacter, levelUpCharacter, startOfflineTimer} from './store.actions';
 import {tap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {AppService} from '../app.service';
@@ -21,6 +21,15 @@ export class StoreEffects {
     tap(() => this.appService.countTeamCP())
   );
 
+  @Effect({dispatch: false})
+  startOfflineTimer$ = this.actions$.pipe(
+    ofType(startOfflineTimer),
+    tap(() => {
+      if (!localStorage.getItem('offlineStart')) {
+        localStorage.setItem('offlineStart', String(Date.now()));
+      }
+    })
+  );
 
   constructor(
     private actions$: Actions,

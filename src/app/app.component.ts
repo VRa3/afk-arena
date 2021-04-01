@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {IState} from './store/store.reducer';
 import {Observable} from 'rxjs';
-import {IUser} from './models/interfaces/IUser';
-import {addRandomHeroOnInit} from './store/store.actions';
+import {addRandomHeroOnInit, startOfflineTimer} from './store/store.actions';
 import {IResources} from './models/interfaces/IResources';
 
 @Component({
@@ -22,6 +20,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(addRandomHeroOnInit());
+    this.store.dispatch(startOfflineTimer());
 
     this.store$.subscribe(store => {
       this.resources = store.resources;

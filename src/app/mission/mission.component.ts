@@ -101,11 +101,15 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   collectAFKMoney() {
-    // to be continued, 1 hour of afk = rewards from previous chapter
+    const now = Date.now();
+    const offlineStart = +localStorage.getItem('offlineStart');
+    const differenceInSeconds = Math.round((now - offlineStart) / 1000);
+    const multiplier = +(differenceInSeconds / 3600).toFixed(2);
+
     this.store.dispatch(addResources({
-      gold: this.rewards.goldRewards[this.currentChapter - 2],
-      experience: this.rewards.experienceRewards[this.currentChapter - 2],
-      magicEssence: this.rewards.magicEssenceRewards[this.currentChapter - 2]
+      gold: (this.rewards.goldRewards[this.currentChapter - 1] * multiplier),
+      experience: (this.rewards.experienceRewards[this.currentChapter - 1] * multiplier),
+      magicEssence: (this.rewards.magicEssenceRewards[this.currentChapter - 1] * multiplier)
     }));
   }
 }
