@@ -4,6 +4,7 @@ import {Ascension} from '../models/enums/ascension';
 export interface IHero {
   name: string;
   lvlCap: number;
+  hardLvlCap: number;
   lvlCurrent: number;
   faction: Faction;
   atk: number;

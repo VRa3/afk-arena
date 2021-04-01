@@ -8,10 +8,10 @@ import {
   resetOfflineTimer,
   startOfflineTimer
 } from './store.actions';
-import {tap} from 'rxjs/operators';
+import {map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {AppService} from '../app.service';
-
+import {of} from 'rxjs';
 
 
 @Injectable()
@@ -20,7 +20,7 @@ export class StoreEffects {
   addMoney$ = this.actions$.pipe(
     ofType(addResources),
     tap(() => console.log('addMoney Effect'))
-    );
+  );
 
   @Effect({dispatch: false})
   countTeamCP$ = this.actions$.pipe(
@@ -44,9 +44,23 @@ export class StoreEffects {
     tap(() => localStorage.setItem('offlineStart', String(Date.now())))
   );
 
+  @Effect({dispatch: false})
+  handleHeroLevel$ = this.actions$.pipe(
+    ofType(levelUpCharacter),
+    withLatestFrom(this.store),
+    switchMap(([actionData, storeObj]) => {
+      const {lvlCap, lvlCurrent} = (storeObj as any).store.heroesList[actionData.characterName];
+      if (lvlCap === lvlCurrent) {
+        console.log('sorry, dalej nie da rady');
+      }
+      return of('elo');
+    })
+  );
+
   constructor(
     private actions$: Actions,
     private store: Store,
     private appService: AppService
-  ) {}
+  ) {
+  }
 }

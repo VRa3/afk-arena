@@ -17,7 +17,8 @@ const initialState: IState = {
   heroesList: {
     Angelo: {
       name: 'Angelo',
-      lvlCap: 120,
+      lvlCap: 20,
+      hardLvlCap: 120,
       lvlCurrent: 1,
       faction: Faction.Lightbearers,
       atk: 21,
@@ -31,7 +32,8 @@ const initialState: IState = {
     },
     Lucius: {
       name: 'Lucius',
-      lvlCap: 240,
+      lvlCap: 20,
+      hardLvlCap: 240,
       lvlCurrent: 1,
       faction: Faction.Lightbearers,
       atk: 45,
@@ -45,7 +47,8 @@ const initialState: IState = {
     },
     Shemira: {
       name: 'Shemira',
-      lvlCap: 240,
+      lvlCap: 20,
+      hardLvlCap: 240,
       lvlCurrent: 1,
       faction: Faction.Graveborn,
       atk: 88,
@@ -59,7 +62,8 @@ const initialState: IState = {
     },
     Rowan: {
       name: 'Rowan',
-      lvlCap: 240,
+      lvlCap: 20,
+      hardLvlCap: 240,
       lvlCurrent: 1,
       faction: Faction.Lightbearers,
       atk: 48,
