@@ -3,8 +3,8 @@ import {AppService} from '../app.service';
 import {Store} from '@ngrx/store';
 import {addResources, resetOfflineTimer} from '../store/store.actions';
 import {IFightResults, MissionService} from './mission.service';
-import {interval, Subscription} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {interval, Subject, Subscription} from 'rxjs';
+import {take, takeUntil} from 'rxjs/operators';
 
 // You can start mission here. By comparing team CP and enemy CP winner is selected.
 // Fight lasts maximally 30 seconds. Bigger advantage = shorter fight time.
@@ -27,6 +27,7 @@ export class MissionComponent implements OnInit, OnDestroy {
   isAbleToCollectAfkMoney: boolean;
   currentFightResults: IFightResults;
   subManager = new Subscription();
+  battleEnded = new Subject<any>();
 
   constructor(private store: Store,
               private appService: AppService,
@@ -74,7 +75,7 @@ export class MissionComponent implements OnInit, OnDestroy {
 
     this.countFightResults();
 
-    interval(1000).pipe(take(this.timeToEndBattle)).subscribe({
+    interval(1000).pipe(takeUntil(this.battleEnded)).subscribe({
       next: () => this.countdownToBattleEnd(),
       complete: () => {
         this.timeToEndBattle = null;
@@ -92,6 +93,9 @@ export class MissionComponent implements OnInit, OnDestroy {
 
   countdownToBattleEnd(): void {
     this.timeToEndBattle = this.timeToEndBattle - 1;
+    if (this.timeToEndBattle <= 0) {
+      this.battleEnded.next(true);
+    }
   }
 
   countFightResults(): void {
@@ -135,5 +139,10 @@ export class MissionComponent implements OnInit, OnDestroy {
     const offlineStart = +localStorage.getItem('offlineStart');
     const differenceInSeconds = Math.round((now - offlineStart) / 1000);
     return differenceInSeconds;
+  }
+
+  onTeamHelp() {
+    // todo: count deduction power
+    this.timeToEndBattle = this.timeToEndBattle - 1;
   }
 }

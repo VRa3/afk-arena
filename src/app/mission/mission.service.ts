@@ -18,7 +18,7 @@ export class MissionService {
   };
   // tslint:disable-next-line:variable-name
   rewards$ = new Subject();
-  missionBaseTime = 3;
+  missionBaseTime = 10;
 
   getFightResults(playerTeam: number, enemyTeam: number): IFightResults {
     const playerIsWinner: boolean = playerTeam > enemyTeam;
