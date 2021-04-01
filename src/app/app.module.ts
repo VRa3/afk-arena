@@ -24,6 +24,8 @@ import {StoreEffects} from './store/store.effects';
 import {AscensionBadgeComponent} from './components/ascension-badge/ascension-badge.component';
 import {MissionService} from './mission/mission.service';
 
+import * as fromHeroes from './store/heroes/heroes.reducer';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +44,10 @@ import {MissionService} from './mission/mission.service';
     MatCardModule,
     MatIconModule,
     AppRoutingModule,
-    StoreModule.forRoot({store: reducer}),
+    StoreModule.forRoot({
+      store: reducer,
+      heroesList: fromHeroes.reducer
+    }),
     EffectsModule.forRoot([StoreEffects]),
     // StoreDevtoolsModule.instrument({maxAge: 25}),
     MatTabsModule,

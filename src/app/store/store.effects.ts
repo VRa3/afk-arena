@@ -47,8 +47,11 @@ export class StoreEffects {
   @Effect({dispatch: false})
   handleHeroLevel$ = this.actions$.pipe(
     ofType(levelUpCharacter),
+    // withLatestFrom(this.store.select('store', 'heroesList')),
+    // withLatestFrom(this.store.select('heroesList')),
     withLatestFrom(this.store),
     switchMap(([actionData, storeObj]) => {
+      console.log(storeObj);
       const {lvlCap, lvlCurrent} = (storeObj as any).store.heroesList[actionData.characterName];
       if (lvlCap === lvlCurrent) {
         console.log('sorry, dalej nie da rady');
@@ -59,7 +62,7 @@ export class StoreEffects {
 
   constructor(
     private actions$: Actions,
-    private store: Store,
+    private store: Store<any>,
     private appService: AppService
   ) {
   }
