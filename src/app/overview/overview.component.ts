@@ -1,8 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IHero} from '../hero-card/IHero';
-import {Observable, Subscription} from 'rxjs';
-import {select, State} from '@ngrx/store';
-import {IState} from '../store/store.reducer';
+import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-overview',
@@ -11,16 +10,14 @@ import {IState} from '../store/store.reducer';
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   heroes: IHero[] = [];
-  store$: Observable<IState>;
+  heroesList$ = this.store.select('heroesList');
   sub: Subscription;
 
-  constructor(private store: State<IState>) {
-    this.store$ = store.pipe(select('store'));
+  constructor(private store: Store<any>) {
   }
 
   ngOnInit(): void {
-    this.sub = this.store$.subscribe(store => {
-      const {heroesList} = store;
+    this.sub = this.heroesList$.subscribe(heroesList => {
       const heroesArray = [];
 
       for (const hero in heroesList) {

@@ -2,10 +2,10 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {IHero} from './IHero';
 import {Faction} from '../models/enums/faction';
 import {Store} from '@ngrx/store';
-import {buyCharacter, levelUpCharacter, starToggler} from '../store/store.actions';
 import {ActivatedRoute} from '@angular/router';
 import {HeroService} from './hero.service';
 import {starToggling} from './hero-card.animations';
+import {buyCharacter, levelUpCharacter, starToggler} from '../store/heroes/heroes.actions';
 
 @Component({
   selector: 'app-hero-card',
@@ -46,7 +46,7 @@ export class HeroCardComponent implements OnInit {
       this.isStarred = !this.isStarred;
       this.isAnimating = true;
 
-      this.animationTimeout = setTimeout(() => {
+      this.animationTimeout = window.setTimeout(() => {
         this.store.dispatch(starToggler({characterName: this.hero.name}));
         this.isAnimating = false;
       }, 500);

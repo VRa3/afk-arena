@@ -1,7 +1,6 @@
 import {AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {select, State} from '@ngrx/store';
-import {Observable, Subscription} from 'rxjs';
-import {IState} from '../store/store.reducer';
+import {Store} from '@ngrx/store';
+import {Subscription} from 'rxjs';
 import {IHero} from '../hero-card/IHero';
 import {AppService} from '../app.service';
 
@@ -13,20 +12,19 @@ import {AppService} from '../app.service';
 export class MyTeamComponent implements OnInit, OnDestroy, AfterViewChecked {
   myTeam: IHero[] = [];
   teamPower = 0;
-  store$: Observable<IState>;
   sub: Subscription;
 
-  constructor(private store: State<IState>, private cdRef: ChangeDetectorRef, private appService: AppService) {
-    this.store$ = store.pipe(select('store'));
+  constructor(private store: Store<any>, private cdRef: ChangeDetectorRef, private appService: AppService) {
   }
 
   ngOnInit(): void {
-    this.sub = this.store$.subscribe(store => {
+    // todo: This can be used with | async
+    this.sub = this.store.select('heroesList').subscribe(heroesList => {
       this.myTeam = [];
 
-      for (const hero in store.heroesList) {
-        if (store.heroesList.hasOwnProperty(hero) && store.heroesList[hero].obtained) {
-          this.myTeam.push(store.heroesList[hero]);
+      for (const hero in heroesList) {
+        if (heroesList.hasOwnProperty(hero) && heroesList[hero].obtained) {
+          this.myTeam.push(heroesList[hero]);
         }
       }
     });

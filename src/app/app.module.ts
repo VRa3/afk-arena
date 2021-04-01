@@ -13,7 +13,6 @@ import {MyTeamComponent} from './my-team/my-team.component';
 import {ShopComponent} from './shop/shop.component';
 import {StoreModule} from '@ngrx/store';
 import {reducer} from './store/store.reducer';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {BottomBarComponent} from './components/bottom-bar/bottom-bar.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
@@ -25,6 +24,7 @@ import {AscensionBadgeComponent} from './components/ascension-badge/ascension-ba
 import {MissionService} from './mission/mission.service';
 
 import * as fromHeroes from './store/heroes/heroes.reducer';
+import * as fromResources from './store/resources/resources.reducer';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,8 @@ import * as fromHeroes from './store/heroes/heroes.reducer';
     AppRoutingModule,
     StoreModule.forRoot({
       store: reducer,
-      heroesList: fromHeroes.reducer
+      heroesList: fromHeroes.reducer,
+      resources: fromResources.reducer
     }),
     EffectsModule.forRoot([StoreEffects]),
     // StoreDevtoolsModule.instrument({maxAge: 25}),

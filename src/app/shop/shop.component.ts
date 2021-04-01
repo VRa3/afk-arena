@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {select, State} from '@ngrx/store';
-import {IState} from '../store/store.reducer';
+import {Store} from '@ngrx/store';
 import {IHero} from '../hero-card/IHero';
 import {Observable, Subscription} from 'rxjs';
 
@@ -11,17 +10,15 @@ import {Observable, Subscription} from 'rxjs';
 })
 export class ShopComponent implements OnInit, OnDestroy {
   heroes: IHero[] = [];
-  store$: Observable<IState>;
-  sub: Subscription;
+  heroesStore$: Observable<any> = this.store.select('heroesList');
+  resourcesStore$: Observable<any> = this.store.select('resources');
+  sub = new Subscription();
   playerMoney: number = null;
 
-  constructor(private store: State<IState>) {
-    this.store$ = store.pipe(select('store'));
-  }
+  constructor(private store: Store<any>) {}
 
   ngOnInit(): void {
-    this.sub = this.store$.subscribe(store => {
-      const {heroesList} = store;
+    const heroesSub = this.heroesStore$.subscribe(heroesList => {
       const heroesArray = [];
 
       for (const hero in heroesList) {
@@ -33,8 +30,14 @@ export class ShopComponent implements OnInit, OnDestroy {
       }
 
       this.heroes = heroesArray;
-      this.playerMoney = store.resources.gold;
     });
+
+    const resourcesSub = this.resourcesStore$.subscribe(resources => {
+      this.playerMoney = resources.gold;
+    });
+
+    this.sub.add(heroesSub);
+    this.sub.add(resourcesSub);
   }
 
   ngOnDestroy(): void {

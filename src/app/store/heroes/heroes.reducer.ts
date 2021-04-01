@@ -3,6 +3,7 @@ import {Ascension} from '../../models/enums/ascension';
 import {Action, createReducer, on} from '@ngrx/store';
 import {addRandomHeroOnInit} from '../store.actions';
 import {IHero} from '../../hero-card/IHero';
+import {buyCharacter, levelUpCharacter, starToggler} from './heroes.actions';
 
 interface IState {
   [key: string]: IHero;
@@ -70,6 +71,14 @@ const initialState: IState = {
   }
 };
 
+const storeReducer = createReducer(
+  initialState,
+  on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state)),
+  on(starToggler, ((state, characterName) => starCharacterReducer(state, characterName))),
+  on(buyCharacter, ((state, data) => buyCharacterReducer(state, data))),
+  on(levelUpCharacter, ((state, characterName) => levelUpCharacterReducer(state, characterName)))
+);
+
 const addRandomHeroOnInitReducer = (state: IState) => {
   const allHeroesNames = Object.keys(state);
   const randomIndex = Math.floor(Math.random() * allHeroesNames.length);
@@ -85,10 +94,42 @@ const addRandomHeroOnInitReducer = (state: IState) => {
   };
 };
 
-const storeReducer = createReducer(
-  initialState,
-  on(addRandomHeroOnInit, (state) => addRandomHeroOnInitReducer(state)),
-);
+const starCharacterReducer = (state: IState, {characterName}) => {
+  const favoriteToggle = state[characterName].favorite;
+
+  return {
+    ...state,
+    heroesList: {
+      ...state.heroesList,
+      [characterName]: {
+        ...state.heroesList[characterName],
+        favorite: !favoriteToggle
+      }
+    }
+  };
+};
+
+const buyCharacterReducer = (state: IState, {characterName}) => {
+  return {
+    ...state,
+    [characterName]: {
+      ...state[characterName],
+      obtained: true
+    }
+  };
+};
+
+const levelUpCharacterReducer = (state: IState, {characterName}) => {
+  const incrementHeroLvl = state[characterName].lvlCurrent + 1;
+
+  return {
+    ...state,
+    [characterName]: {
+      ...state[characterName],
+      lvlCurrent: incrementHeroLvl
+    }
+  };
+};
 
 export function reducer(state = initialState, action: Action) {
   return storeReducer(state, action);

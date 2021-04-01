@@ -18,7 +18,7 @@ export class AppService {
   }
 
   countTeamCP() {
-    this.store$ = this.store.pipe(select('store', 'heroesList'));
+    this.store$ = this.store.select('heroesList');
     let amount = 0;
 
     const sub = this.store$.pipe(map(heroesList => {

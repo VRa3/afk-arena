@@ -8,5 +8,5 @@
 
   <router-outlet></router-outlet>
 
-  <app-bottom-bar [resources]="resources"></app-bottom-bar>
+  <app-bottom-bar [resources]="resources$ | async"></app-bottom-bar>
 </div>

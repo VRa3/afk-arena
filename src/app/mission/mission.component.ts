@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AppService} from '../app.service';
 import {Store} from '@ngrx/store';
-import {addResources, resetOfflineTimer} from '../store/store.actions';
+import {resetOfflineTimer} from '../store/store.actions';
 import {IFightResults, MissionService} from './mission.service';
 import {interval, Subject, Subscription} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
+import {addResources} from '../store/resources/resources.actions';
 
 // You can start mission here. By comparing team CP and enemy CP winner is selected.
 // Fight lasts maximally 30 seconds. Bigger advantage = shorter fight time.
