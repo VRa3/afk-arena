@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IHero} from '../hero-card/IHero';
 import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
+import {AppState} from '../store/app.reducer';
 
 @Component({
   selector: 'app-overview',
@@ -13,7 +14,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   heroesList$ = this.store.select('heroesList');
   sub: Subscription;
 
-  constructor(private store: Store<any>) {
+  constructor(private store: Store<AppState>) {
   }
 
   ngOnInit(): void {

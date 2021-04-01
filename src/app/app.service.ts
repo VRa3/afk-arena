@@ -3,6 +3,7 @@ import {select, Store} from '@ngrx/store';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {HeroService} from './hero-card/hero.service';
+import {AppState} from './store/app.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AppService {
   currentStage$ = new BehaviorSubject(1);
   teamCP$ = new BehaviorSubject(0);
 
-  constructor(private store: Store<any>, private heroService: HeroService) {
+  constructor(private store: Store<AppState>, private heroService: HeroService) {
   }
 
   countTeamCP() {

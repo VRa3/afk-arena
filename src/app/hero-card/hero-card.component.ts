@@ -6,6 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 import {HeroService} from './hero.service';
 import {starToggling} from './hero-card.animations';
 import {buyCharacter, levelUpCharacter, starToggler} from '../store/heroes/heroes.actions';
+import {AppState} from '../store/app.reducer';
 
 @Component({
   selector: 'app-hero-card',
@@ -29,7 +30,10 @@ export class HeroCardComponent implements OnInit {
     return this.heroService.getCurrentCP(this.hero);
   }
 
-  constructor(private store: Store<any>, private route: ActivatedRoute, private heroService: HeroService) {}
+  constructor(private store: Store<AppState>,
+              private route: ActivatedRoute,
+              private heroService: HeroService) {
+  }
 
   ngOnInit(): void {
     const {favorite, obtained} = this.hero;

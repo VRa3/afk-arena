@@ -3,6 +3,7 @@ import {Store} from '@ngrx/store';
 import {Subscription} from 'rxjs';
 import {IHero} from '../hero-card/IHero';
 import {AppService} from '../app.service';
+import {AppState} from '../store/app.reducer';
 
 @Component({
   selector: 'app-my-team',
@@ -14,7 +15,7 @@ export class MyTeamComponent implements OnInit, OnDestroy, AfterViewChecked {
   teamPower = 0;
   sub: Subscription;
 
-  constructor(private store: Store<any>, private cdRef: ChangeDetectorRef, private appService: AppService) {
+  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, private appService: AppService) {
   }
 
   ngOnInit(): void {

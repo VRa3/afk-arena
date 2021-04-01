@@ -11,6 +11,7 @@ import {AppService} from '../app.service';
 import {of} from 'rxjs';
 import {buyCharacter, levelUpCharacter} from './heroes/heroes.actions';
 import {addResources} from './resources/resources.actions';
+import {AppState} from './app.reducer';
 
 
 @Injectable()
@@ -58,7 +59,7 @@ export class StoreEffects {
 
   constructor(
     private actions$: Actions,
-    private store: Store<any>,
+    private store: Store<AppState>,
     private appService: AppService
   ) {
   }

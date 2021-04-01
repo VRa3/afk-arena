@@ -6,6 +6,7 @@ import {IFightResults, MissionService} from './mission.service';
 import {interval, Subject, Subscription} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 import {addResources} from '../store/resources/resources.actions';
+import {AppState} from '../store/app.reducer';
 
 // You can start mission here. By comparing team CP and enemy CP winner is selected.
 // Fight lasts maximally 30 seconds. Bigger advantage = shorter fight time.
@@ -30,7 +31,7 @@ export class MissionComponent implements OnInit, OnDestroy {
   subManager = new Subscription();
   battleEnded = new Subject<any>();
 
-  constructor(private store: Store,
+  constructor(private store: Store<AppState>,
               private appService: AppService,
               private missionService: MissionService) {
   }

@@ -12,7 +12,6 @@ import {OverviewComponent} from './overview/overview.component';
 import {MyTeamComponent} from './my-team/my-team.component';
 import {ShopComponent} from './shop/shop.component';
 import {StoreModule} from '@ngrx/store';
-import {reducer} from './store/store.reducer';
 import {BottomBarComponent} from './components/bottom-bar/bottom-bar.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatMenuModule} from '@angular/material/menu';
@@ -23,8 +22,7 @@ import {StoreEffects} from './store/store.effects';
 import {AscensionBadgeComponent} from './components/ascension-badge/ascension-badge.component';
 import {MissionService} from './mission/mission.service';
 
-import * as fromHeroes from './store/heroes/heroes.reducer';
-import * as fromResources from './store/resources/resources.reducer';
+import * as fromApp from './store/app.reducer';
 
 @NgModule({
   declarations: [
@@ -44,11 +42,7 @@ import * as fromResources from './store/resources/resources.reducer';
     MatCardModule,
     MatIconModule,
     AppRoutingModule,
-    StoreModule.forRoot({
-      store: reducer,
-      heroesList: fromHeroes.reducer,
-      resources: fromResources.reducer
-    }),
+    StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([StoreEffects]),
     // StoreDevtoolsModule.instrument({maxAge: 25}),
     MatTabsModule,

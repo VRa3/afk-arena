@@ -5,7 +5,7 @@ import {addRandomHeroOnInit} from '../store.actions';
 import {IHero} from '../../hero-card/IHero';
 import {buyCharacter, levelUpCharacter, starToggler} from './heroes.actions';
 
-interface IState {
+export interface IState {
   [key: string]: IHero;
 }
 

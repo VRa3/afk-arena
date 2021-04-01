@@ -1,7 +1,7 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import {addResources, deductResources} from './resources.actions';
 
-interface IState {
+export interface IState {
   gold: number;
   experience: number;
   magicEssence: number;

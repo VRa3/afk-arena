@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {IHero} from '../hero-card/IHero';
 import {Observable, Subscription} from 'rxjs';
+import {AppState} from '../store/app.reducer';
 
 @Component({
   selector: 'app-shop',
@@ -15,7 +16,8 @@ export class ShopComponent implements OnInit, OnDestroy {
   sub = new Subscription();
   playerMoney: number = null;
 
-  constructor(private store: Store<any>) {}
+  constructor(private store: Store<AppState>) {
+  }
 
   ngOnInit(): void {
     const heroesSub = this.heroesStore$.subscribe(heroesList => {
