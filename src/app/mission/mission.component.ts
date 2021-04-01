@@ -62,7 +62,7 @@ export class MissionComponent implements OnInit, OnDestroy {
     this.subManager.unsubscribe();
   }
 
-  startFight() {
+  startFight(): void {
     if (this.timeToEndBattle > 0) {
       return;
     }
@@ -70,7 +70,7 @@ export class MissionComponent implements OnInit, OnDestroy {
     this.countFightResults();
 
     interval(1000).pipe(take(this.timeToEndBattle)).subscribe({
-      next: time => this.countdownToBattleEnd(time),
+      next: () => this.countdownToBattleEnd(),
       complete: () => {
         this.timeToEndBattle = null;
 
@@ -83,16 +83,16 @@ export class MissionComponent implements OnInit, OnDestroy {
     });
   }
 
-  countdownToBattleEnd(time) {
-    this.timeToEndBattle = this.timeToEndBattle - (time + 1);
+  countdownToBattleEnd(): void {
+    this.timeToEndBattle = this.timeToEndBattle - 1;
   }
 
-  countFightResults() {
+  countFightResults(): void {
     this.currentFightResults = this.missionService.getFightResults(this.teamCP, this.enemyCP);
     this.timeToEndBattle = Math.floor(this.missionService.missionBaseTime / this.currentFightResults.timeModificator);
   }
 
-  giveRewards() {
+  giveRewards(): void {
     this.store.dispatch(addResources({
       gold: this.rewards.goldRewards[this.currentChapter - 1],
       experience: this.rewards.experienceRewards[this.currentChapter - 1],
@@ -100,7 +100,7 @@ export class MissionComponent implements OnInit, OnDestroy {
     }));
   }
 
-  collectAFKMoney() {
+  collectAFKMoney(): void {
     const now = Date.now();
     const offlineStart = +localStorage.getItem('offlineStart');
     const differenceInSeconds = Math.round((now - offlineStart) / 1000);
