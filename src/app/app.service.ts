@@ -11,10 +11,8 @@ export class AppService {
   // tslint:disable:variable-name
 
   store$: Observable<any>;
-  private _currentStageSource = new BehaviorSubject(1);
-  currentStage$ = this._currentStageSource.asObservable();
-  private _teamCPSource = new BehaviorSubject(0);
-  teamCP$ = this._teamCPSource.asObservable();
+  currentStage$ = new BehaviorSubject(1);
+  teamCP$ = new BehaviorSubject(0);
 
   constructor(private store: Store<any>, private heroService: HeroService) {
   }
@@ -45,10 +43,10 @@ export class AppService {
 
     sub.unsubscribe();
 
-    this._teamCPSource.next(amount);
+    this.teamCP$.next(amount);
   }
 
   advancePlayerToNextStage(stage) {
-    this._currentStageSource.next(stage);
+    this.currentStage$.next(stage);
   }
 }

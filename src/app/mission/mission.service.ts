@@ -17,8 +17,7 @@ export class MissionService {
     magicEssence: 10
   };
   // tslint:disable-next-line:variable-name
-  _rewardsSource = new Subject();
-  rewards$ = this._rewardsSource.asObservable();
+  rewards$ = new Subject();
   missionBaseTime = 3;
 
   getFightResults(playerTeam: number, enemyTeam: number): IFightResults {
@@ -58,7 +57,7 @@ export class MissionService {
       magicEssenceRewards.push(+(magicEssence.toFixed(2)));
     }
 
-    this._rewardsSource.next({
+    this.rewards$.next({
       stages,
       goldRewards,
       experienceRewards,
