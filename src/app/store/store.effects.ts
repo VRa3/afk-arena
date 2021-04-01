@@ -1,6 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {addRandomHeroOnInit, addResources, buyCharacter, levelUpCharacter, startOfflineTimer} from './store.actions';
+import {
+  addRandomHeroOnInit,
+  addResources,
+  buyCharacter,
+  levelUpCharacter,
+  resetOfflineTimer,
+  startOfflineTimer
+} from './store.actions';
 import {tap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {AppService} from '../app.service';
@@ -29,6 +36,12 @@ export class StoreEffects {
         localStorage.setItem('offlineStart', String(Date.now()));
       }
     })
+  );
+
+  @Effect({dispatch: false})
+  resetOfflineTimer$ = this.actions$.pipe(
+    ofType(resetOfflineTimer),
+    tap(() => localStorage.setItem('offlineStart', String(Date.now())))
   );
 
   constructor(

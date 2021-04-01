@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AppService} from '../app.service';
 import {Store} from '@ngrx/store';
-import {addResources} from '../store/store.actions';
+import {addResources, resetOfflineTimer} from '../store/store.actions';
 import {IFightResults, MissionService} from './mission.service';
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -19,15 +19,18 @@ import {take} from 'rxjs/operators';
 export class MissionComponent implements OnInit, OnDestroy {
   teamCP: number;
   enemyCP: number;
-  currentFightResults: IFightResults;
   timeToEndBattle: number;
   currentChapter: number;
-  subManager = new Subscription();
   stages: number[];
   rewards: any;
   hasMoreChapters = true;
+  isAbleToCollectAfkMoney: boolean;
+  currentFightResults: IFightResults;
+  subManager = new Subscription();
 
-  constructor(private store: Store, private appService: AppService, private missionService: MissionService) {
+  constructor(private store: Store,
+              private appService: AppService,
+              private missionService: MissionService) {
   }
 
   ngOnInit(): void {
@@ -54,6 +57,8 @@ export class MissionComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.isAbleToCollectAfkMoney = this.getOfflineTimeInSeconds() > 15;
+
     this.subManager.add(stageAndRewardsSub);
     this.subManager.add(currentStageSub);
   }
@@ -74,11 +79,13 @@ export class MissionComponent implements OnInit, OnDestroy {
       complete: () => {
         this.timeToEndBattle = null;
 
-        this.giveRewards();
-
         if (this.currentFightResults.playerIsWinner) {
           this.appService.advancePlayerToNextStage(this.currentChapter + 1);
+          this.giveRewards();
+          return;
         }
+
+        this.giveSmallRewards();
       }
     });
   }
@@ -100,16 +107,33 @@ export class MissionComponent implements OnInit, OnDestroy {
     }));
   }
 
-  collectAFKMoney(): void {
-    const now = Date.now();
-    const offlineStart = +localStorage.getItem('offlineStart');
-    const differenceInSeconds = Math.round((now - offlineStart) / 1000);
-    const multiplier = +(differenceInSeconds / 3600).toFixed(2);
+  giveSmallRewards(): void {
+    const multiplier = 0.25;
 
     this.store.dispatch(addResources({
       gold: (this.rewards.goldRewards[this.currentChapter - 1] * multiplier),
       experience: (this.rewards.experienceRewards[this.currentChapter - 1] * multiplier),
       magicEssence: (this.rewards.magicEssenceRewards[this.currentChapter - 1] * multiplier)
     }));
+  }
+
+  collectAFKMoney(): void {
+    const multiplier = +(this.getOfflineTimeInSeconds() / 3600).toFixed(2);
+    this.isAbleToCollectAfkMoney = false;
+    interval(15000).pipe(take(1)).subscribe(() => this.isAbleToCollectAfkMoney = true);
+
+    this.store.dispatch(addResources({
+      gold: (this.rewards.goldRewards[this.currentChapter - 1] * multiplier),
+      experience: (this.rewards.experienceRewards[this.currentChapter - 1] * multiplier),
+      magicEssence: (this.rewards.magicEssenceRewards[this.currentChapter - 1] * multiplier)
+    }));
+    this.store.dispatch(resetOfflineTimer());
+  }
+
+  getOfflineTimeInSeconds(): number {
+    const now = Date.now();
+    const offlineStart = +localStorage.getItem('offlineStart');
+    const differenceInSeconds = Math.round((now - offlineStart) / 1000);
+    return differenceInSeconds;
   }
 }

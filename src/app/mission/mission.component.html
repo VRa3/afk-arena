@@ -4,7 +4,13 @@
     <button mat-flat-button color="primary" (click)="startFight()">Start</button>
   </div>
   <div>
-    <button mat-flat-button color="accent" (click)="collectAFKMoney()">Collect resources</button>
+    <button mat-flat-button
+            color="accent"
+            (click)="collectAFKMoney()"
+            [disabled]="!isAbleToCollectAfkMoney"
+    >
+      Collect resources
+    </button>
   </div>
 
   <p *ngIf="hasMoreChapters">Current progress: Chapter: 1, stage: {{currentChapter}}</p>
