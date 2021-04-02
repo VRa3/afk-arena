@@ -147,4 +147,12 @@ export class MissionComponent implements OnInit, OnDestroy {
     // todo: count deduction power
     this.timeToEndBattle = this.timeToEndBattle - 1;
   }
+
+  onCheat() {
+    this.store.dispatch(addResources({
+      gold: 1000,
+      experience: 1000,
+      magicEssence: 1000
+    }));
+  }
 }

@@ -37,11 +37,11 @@ const addResourceReducer = (state: IState, resourceType) => {
 };
 
 const deductMoneyReducer = (state: IState, {resourceType, amount}) => {
-  const x = state[resourceType] - amount;
+  const deductedAmount = state[resourceType] - amount;
 
   return {
     ...state,
-    [resourceType]: x
+    [resourceType]: deductedAmount.toFixed(2)
   };
 };
 

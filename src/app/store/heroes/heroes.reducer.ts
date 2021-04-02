@@ -99,12 +99,9 @@ const starCharacterReducer = (state: IState, {characterName}) => {
 
   return {
     ...state,
-    heroesList: {
-      ...state.heroesList,
-      [characterName]: {
-        ...state.heroesList[characterName],
-        favorite: !favoriteToggle
-      }
+    [characterName]: {
+      ...state[characterName],
+      favorite: !favoriteToggle
     }
   };
 };
