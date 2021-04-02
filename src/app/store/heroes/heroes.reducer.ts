@@ -4,10 +4,11 @@ import {Action, createReducer, on} from '@ngrx/store';
 import {addRandomHeroOnInit} from '../store.actions';
 import {IHero} from '../../hero-card/IHero';
 import {buyCharacter, levelUpCharacter, starToggler} from './heroes.actions';
+import {Heroes} from '../../models/enums/heroes';
 
-export interface IState {
-  [key: string]: IHero;
-}
+export type IState = {
+  [key in keyof typeof Heroes]: IHero
+};
 
 const initialState: IState = {
   Angelo: {

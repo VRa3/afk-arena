@@ -24,6 +24,7 @@ import {MissionService} from './mission/mission.service';
 
 import * as fromApp from './store/app.reducer';
 import {HeroesEffects} from './store/heroes/heroes.effects';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [

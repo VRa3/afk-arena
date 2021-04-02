@@ -7,6 +7,7 @@ import {HeroService} from './hero.service';
 import {starToggling} from './hero-card.animations';
 import {buyCharacter, levelUpCharacter, starToggler} from '../store/heroes/heroes.actions';
 import {AppState} from '../store/app.reducer';
+import {IResourceToManage} from '../store/resources/resources.actions';
 
 @Component({
   selector: 'app-hero-card',
@@ -26,8 +27,12 @@ export class HeroCardComponent implements OnInit {
   isAnimating = false;
   animationTimeout: number;
 
-  get currentCP() {
+  get currentCP(): number {
     return this.heroService.getCurrentCP(this.hero);
+  }
+
+  get upgradeCost(): IResourceToManage[] {
+    return this.heroService.getUpgradeCosts(this.hero);
   }
 
   constructor(private store: Store<AppState>,

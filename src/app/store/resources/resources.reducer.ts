@@ -1,5 +1,5 @@
 import {Action, createReducer, on} from '@ngrx/store';
-import {addResources, deductResources} from './resources.actions';
+import {addResources, deductResource, deductResources} from './resources.actions';
 
 export interface IState {
   gold: number;
@@ -16,7 +16,8 @@ const initialState: IState = {
 const storeReducer = createReducer(
   initialState,
   on(addResources, (state, resourceType) => addResourceReducer(state, resourceType)),
-  on(deductResources, (state, resourceType) => deductMoneyReducer(state, resourceType))
+  on(deductResource, (state, resourceType) => deductMoneyReducer(state, resourceType)),
+  on(deductResources, (state, resources) => deductMultipleResourcesReducer(state, resources))
 );
 
 const addResourceReducer = (state: IState, resourceType) => {
@@ -30,10 +31,7 @@ const addResourceReducer = (state: IState, resourceType) => {
     }
   }
 
-  return {
-    ...state,
-    ...resourcesObj
-  };
+  return resourcesObj;
 };
 
 const deductMoneyReducer = (state: IState, {resourceType, amount}) => {
@@ -43,6 +41,18 @@ const deductMoneyReducer = (state: IState, {resourceType, amount}) => {
     ...state,
     [resourceType]: deductedAmount.toFixed(2)
   };
+};
+
+const deductMultipleResourcesReducer = (state: IState, {resources}) => {
+  const resourcesObj = {
+    ...state
+  };
+
+  for (const resource of resources) {
+    resourcesObj[resource.resourceType] = resourcesObj[resource.resourceType] - resource.amount;
+  }
+
+  return resourcesObj;
 };
 
 export function reducer(state: IState | undefined, action: Action) {
