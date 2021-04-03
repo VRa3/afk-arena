@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AscensionBadgeComponent } from './ascension-badge.component';
 
@@ -6,7 +6,7 @@ describe('AscensionBadgeComponent', () => {
   let component: AscensionBadgeComponent;
   let fixture: ComponentFixture<AscensionBadgeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AscensionBadgeComponent ]
     })
