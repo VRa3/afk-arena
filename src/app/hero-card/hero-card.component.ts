@@ -24,8 +24,6 @@ export class HeroCardComponent implements OnInit {
   isStarred: boolean;
   canBeLeveledUp: boolean;
   faction = Faction;
-  isAnimating = false;
-  animationTimeout: number;
 
   get currentCP(): number {
     return this.heroService.getCurrentCP(this.hero);
@@ -51,15 +49,7 @@ export class HeroCardComponent implements OnInit {
   }
 
   starToggle() {
-    if (!this.isAnimating) {
       this.isStarred = !this.isStarred;
-      this.isAnimating = true;
-
-      this.animationTimeout = window.setTimeout(() => {
-        this.store.dispatch(starToggler({characterName: this.hero.name}));
-        this.isAnimating = false;
-      }, 500);
-    }
   }
 
   buyCharacter() {
@@ -68,5 +58,13 @@ export class HeroCardComponent implements OnInit {
 
   levelUp() {
     this.store.dispatch(levelUpCharacter({characterName: this.hero.name}));
+  }
+
+  afterStarToggle($event) {
+    if ($event.fromState === 'void' || $event.toState === 'void') {
+      return;
+    }
+
+    this.store.dispatch(starToggler({characterName: this.hero.name}));
   }
 }
