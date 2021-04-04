@@ -30,6 +30,8 @@ export class MissionComponent implements OnInit, OnDestroy {
   currentFightResults: IFightResults;
   subManager = new Subscription();
   battleEnded = new Subject<any>();
+  // todo: fix this...
+  timeModification = 10;
 
   constructor(private store: Store<AppState>,
               private appService: AppService,
@@ -77,7 +79,7 @@ export class MissionComponent implements OnInit, OnDestroy {
 
     this.countFightResults();
 
-    interval(1000).pipe(takeUntil(this.battleEnded)).subscribe({
+    interval(100).pipe(takeUntil(this.battleEnded)).subscribe({
       next: () => this.countdownToBattleEnd(),
       complete: () => {
         this.timeToEndBattle = null;
@@ -94,7 +96,7 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   countdownToBattleEnd(): void {
-    this.timeToEndBattle = this.timeToEndBattle - 1;
+    this.timeToEndBattle = this.timeToEndBattle - this.timeModification;
     if (this.timeToEndBattle <= 0) {
       this.battleEnded.next(true);
     }
@@ -102,7 +104,8 @@ export class MissionComponent implements OnInit, OnDestroy {
 
   countFightResults(): void {
     this.currentFightResults = this.missionService.getFightResults(this.teamCP, this.enemyCP);
-    this.timeToEndBattle = Math.floor(this.missionService.missionBaseTime / this.currentFightResults.timeModificator);
+    this.timeToEndBattle =
+      Math.floor(this.missionService.missionBaseTime / this.currentFightResults.timeModificator) * this.timeModification;
   }
 
   giveRewards(): void {
@@ -139,13 +142,12 @@ export class MissionComponent implements OnInit, OnDestroy {
   getOfflineTimeInSeconds(): number {
     const now = Date.now();
     const offlineStart = +localStorage.getItem('offlineStart');
-    const differenceInSeconds = Math.round((now - offlineStart) / 1000);
-    return differenceInSeconds;
+    return Math.round((now - offlineStart) / 1000);
   }
 
   onTeamHelp() {
     // todo: count deduction power
-    this.timeToEndBattle = this.timeToEndBattle - 1;
+    this.timeToEndBattle = this.timeToEndBattle - this.timeModification;
   }
 
   onCheat() {

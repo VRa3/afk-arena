@@ -1,7 +1,7 @@
 <div>
   <p>You CP: {{teamCP}} vs Enemy CP: {{enemyCP}}</p>
   <div *ngIf="hasMoreChapters">
-    <button mat-flat-button color="primary" (click)="startFight()">Start</button>
+    <button [disabled]="timeToEndBattle > 0" mat-flat-button color="primary" (click)="startFight()">Start</button>
 
     <button class="ml-3" mat-flat-button color="primary" (click)="onTeamHelp()">Help team!</button>
 
