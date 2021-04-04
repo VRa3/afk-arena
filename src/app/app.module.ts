@@ -25,6 +25,7 @@ import {MissionService} from './mission/mission.service';
 import * as fromApp from './store/app.reducer';
 import {HeroesEffects} from './store/heroes/heroes.effects';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     AppRoutingModule,
     StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([StoreEffects, HeroesEffects]),
-    // StoreDevtoolsModule.instrument({maxAge: 25}),
+    StoreDevtoolsModule.instrument({maxAge: 25}),
     MatTabsModule,
     MatMenuModule
   ],

@@ -29,6 +29,21 @@ export class HeroesEffects {
     })
   );
 
+  // todo: Probably useless
+  // @Effect({dispatch: false})
+  // handleHeroLevel$ = this.actions$.pipe(
+  //   ofType(levelUpCharacter),
+  //   withLatestFrom(this.store.select('heroesList')),
+  //   switchMap(([actionData, heroesList]) => {
+  //     const {lvlCap, lvlCurrent} = heroesList[actionData.characterName];
+  //     if (lvlCap === lvlCurrent) {
+  //       console.log('sorry, dalej nie da rady');
+  //       return of('elo');
+  //     }
+  //     return of('elo');
+  //   })
+  // );
+
   constructor(private actions$: Actions,
               private store: Store<AppState>,
               private heroService: HeroService

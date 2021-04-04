@@ -2,7 +2,6 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {IHero} from './IHero';
 import {Faction} from '../models/enums/faction';
 import {Store} from '@ngrx/store';
-import {ActivatedRoute} from '@angular/router';
 import {HeroService} from './hero.service';
 import {starToggling} from './hero-card.animations';
 import {buyCharacter, levelUpCharacter, starToggler} from '../store/heroes/heroes.actions';
@@ -38,18 +37,13 @@ export class HeroCardComponent implements OnInit {
   }
 
   constructor(private store: Store<AppState>,
-              private route: ActivatedRoute,
               private heroService: HeroService) {
   }
 
   ngOnInit(): void {
     const {favorite, obtained} = this.hero;
-    let currentRoute = '';
-
-    this.route.url.subscribe(route => currentRoute = route[0].path);
-
     this.isStarred = favorite;
-    this.canBeLeveledUp = obtained && currentRoute === 'my-team';
+    this.canBeLeveledUp = obtained && !this.shopUI && (this.hero.lvlCurrent !== this.hero.lvlCap);
   }
 
   starToggle() {

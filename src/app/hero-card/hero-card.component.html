@@ -46,9 +46,12 @@
       </button>
     </span>
 
-    <button *ngIf="canBeLeveledUp" (click)="levelUp()" mat-raised-button matTooltip="Upgrade!">
-      <mat-icon aria-hidden="false" aria-label="Buy character icon">upgrade</mat-icon>
-    </button>
+    <span *ngIf="canBeLeveledUp || !shopUI" [matTooltip]="canBeLeveledUp ? 'Upgrade!' : 'Sorry, Your character reached level cap. Ascension will let Your hero advance further.'">
+      <button [disabled]="!canBeLeveledUp" (click)="levelUp()" mat-raised-button>
+        <mat-icon aria-hidden="false" aria-label="Buy character icon">upgrade</mat-icon>
+      </button>
+    </span>
+
 
     <button (click)="starToggle()" [@starToggling]="isStarred" (@starToggling.done)="afterStarToggle($event)"
             mat-raised-button>
