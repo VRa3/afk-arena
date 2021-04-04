@@ -29,9 +29,10 @@ export class MissionComponent implements OnInit, OnDestroy {
   isAbleToCollectAfkMoney: boolean;
   currentFightResults: IFightResults;
   subManager = new Subscription();
-  battleEnded = new Subject<any>();
+  battleEnded$ = new Subject<any>();
   // todo: fix this...
   timeModification = 10;
+  fightProgress: number;
 
   constructor(private store: Store<AppState>,
               private appService: AppService,
@@ -79,7 +80,7 @@ export class MissionComponent implements OnInit, OnDestroy {
 
     this.countFightResults();
 
-    interval(100).pipe(takeUntil(this.battleEnded)).subscribe({
+    interval(100).pipe(takeUntil(this.battleEnded$)).subscribe({
       next: () => this.countdownToBattleEnd(),
       complete: () => {
         this.timeToEndBattle = null;
@@ -98,7 +99,7 @@ export class MissionComponent implements OnInit, OnDestroy {
   countdownToBattleEnd(): void {
     this.timeToEndBattle = this.timeToEndBattle - this.timeModification;
     if (this.timeToEndBattle <= 0) {
-      this.battleEnded.next(true);
+      this.battleEnded$.next(true);
     }
   }
 
@@ -106,6 +107,8 @@ export class MissionComponent implements OnInit, OnDestroy {
     this.currentFightResults = this.missionService.getFightResults(this.teamCP, this.enemyCP);
     this.timeToEndBattle =
       Math.floor(this.missionService.missionBaseTime / this.currentFightResults.timeModificator) * this.timeModification;
+    this.fightProgress = this.currentFightResults.timeModificator;
+
   }
 
   giveRewards(): void {
@@ -146,8 +149,13 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   onTeamHelp() {
-    // todo: count deduction power
-    this.timeToEndBattle = this.timeToEndBattle - this.timeModification;
+    // todo: count deduction power (currently at 100)
+    this.timeToEndBattle = this.timeToEndBattle - 500;
+    this.fightProgress = this.fightProgress + 0.05;
+
+    if (this.fightProgress >= 1) {
+      this.battleEnded$.next(true);
+    }
   }
 
   onCheat() {
