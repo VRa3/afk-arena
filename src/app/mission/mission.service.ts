@@ -1,11 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-export interface IFightResults {
-  playerIsWinner: boolean;
-  timeModificator: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -18,16 +13,10 @@ export class MissionService {
   };
   // tslint:disable-next-line:variable-name
   rewards$ = new Subject();
-  missionBaseTime = 10;
+  missionBaseTime = 30;
 
-  getFightResults(playerTeam: number, enemyTeam: number): IFightResults {
-    const playerIsWinner: boolean = playerTeam > enemyTeam;
-    const timeModificator: number = +(playerTeam / enemyTeam).toFixed(2);
-
-    return {
-      playerIsWinner,
-      timeModificator
-    };
+  getWinChance(playerTeam: number, enemyTeam: number): number {
+    return +(playerTeam / enemyTeam).toFixed(2);
   }
 
   generateStagesAndRewards() {

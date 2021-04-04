@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AppService} from '../app.service';
 import {Store} from '@ngrx/store';
 import {resetOfflineTimer} from '../store/store.actions';
-import {IFightResults, MissionService} from './mission.service';
+import {MissionService} from './mission.service';
 import {interval, Subject, Subscription} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 import {addResources} from '../store/resources/resources.actions';
@@ -27,7 +27,6 @@ export class MissionComponent implements OnInit, OnDestroy {
   rewards: any;
   hasMoreChapters = true;
   isAbleToCollectAfkMoney: boolean;
-  currentFightResults: IFightResults;
   subManager = new Subscription();
   battleEnded$ = new Subject<any>();
   // todo: fix this...
@@ -81,11 +80,11 @@ export class MissionComponent implements OnInit, OnDestroy {
     this.countFightResults();
 
     interval(100).pipe(takeUntil(this.battleEnded$)).subscribe({
-      next: () => this.countdownToBattleEnd(),
+      next: () => this.countdownWhileBattling(),
       complete: () => {
         this.timeToEndBattle = null;
 
-        if (this.currentFightResults.playerIsWinner) {
+        if (this.fightProgress >= 1) {
           this.appService.advancePlayerToNextStage(this.currentChapter + 1);
           this.giveRewards();
           return;
@@ -96,19 +95,21 @@ export class MissionComponent implements OnInit, OnDestroy {
     });
   }
 
-  countdownToBattleEnd(): void {
+  countFightResults(): void {
+    const winChance = this.missionService.getWinChance(this.teamCP, this.enemyCP);
+
+    winChance <= 1
+      ? this.timeToEndBattle = 300 * this.timeModification
+      : this.timeToEndBattle = Math.floor(this.missionService.missionBaseTime / winChance) * this.timeModification * 10;
+    this.fightProgress = winChance;
+
+  }
+
+  countdownWhileBattling(): void {
     this.timeToEndBattle = this.timeToEndBattle - this.timeModification;
     if (this.timeToEndBattle <= 0) {
       this.battleEnded$.next(true);
     }
-  }
-
-  countFightResults(): void {
-    this.currentFightResults = this.missionService.getFightResults(this.teamCP, this.enemyCP);
-    this.timeToEndBattle =
-      Math.floor(this.missionService.missionBaseTime / this.currentFightResults.timeModificator) * this.timeModification;
-    this.fightProgress = this.currentFightResults.timeModificator;
-
   }
 
   giveRewards(): void {
@@ -149,9 +150,9 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   onTeamHelp() {
-    // todo: count deduction power (currently at 100)
-    this.timeToEndBattle = this.timeToEndBattle - 500;
-    this.fightProgress = this.fightProgress + 0.05;
+    // todo: count deduction power
+    const deductionPower = 0.05;
+    this.fightProgress = this.fightProgress + deductionPower;
 
     if (this.fightProgress >= 1) {
       this.battleEnded$.next(true);
