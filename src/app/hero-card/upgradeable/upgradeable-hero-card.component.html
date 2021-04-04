@@ -30,7 +30,7 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <span *ngIf="canBeLeveledUp || !shopUI" [matTooltip]="canBeLeveledUp ? 'Upgrade!' : 'Sorry, Your character reached level cap. Ascension will let Your hero advance further.'">
+    <span [matTooltip]="canBeLeveledUp ? 'Upgrade!' : 'Sorry, Your character reached level cap. Ascension will let Your hero advance further.'">
       <button [disabled]="!canBeLeveledUp" (click)="levelUp()" mat-raised-button>
         <mat-icon aria-hidden="false" aria-label="Buy character icon">upgrade</mat-icon>
       </button>

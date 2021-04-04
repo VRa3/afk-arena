@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {HeroCardComponent} from '../hero-card.component';
 import {buyCharacter} from '../../store/heroes/heroes.actions';
 
@@ -8,6 +8,8 @@ import {buyCharacter} from '../../store/heroes/heroes.actions';
   styleUrls: ['../hero-card.component.scss'],
 })
 export class BuyableHeroCardComponent extends HeroCardComponent {
+  @Input() ableToBuy: boolean;
+
   get characterCostText(): string {
     return `Buy ${this.hero.name} for ${this.hero.price} golds`;
   }

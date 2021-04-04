@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HeroCardComponent} from '../hero-card.component';
 import {IResourceToManage} from '../../store/resources/resources.actions';
 import {levelUpCharacter} from '../../store/heroes/heroes.actions';
@@ -8,9 +8,16 @@ import {levelUpCharacter} from '../../store/heroes/heroes.actions';
   templateUrl: './upgradeable-hero-card.component.html',
   styleUrls: ['../hero-card.component.scss'],
 })
-export class UpgradeableHeroCardComponent extends HeroCardComponent {
+export class UpgradeableHeroCardComponent extends HeroCardComponent implements OnInit {
+  @Input() upgradeable: boolean;
+  canBeLeveledUp: boolean;
+
   get upgradeCost(): IResourceToManage[] {
     return this.heroService.getUpgradeCosts(this.hero);
+  }
+
+  ngOnInit() {
+    this.canBeLeveledUp = this.hero.lvlCurrent !== this.hero.lvlCap;
   }
 
   levelUp() {

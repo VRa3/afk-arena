@@ -22,8 +22,7 @@
   </mat-card-content>
   <mat-card-actions>
     <span [matTooltip]="ableToBuy ? characterCostText : 'Sorry, You can\' afford this character'">
-      <button *ngIf="shopUI"
-              [disabled]="!ableToBuy"
+      <button [disabled]="!ableToBuy"
               (click)="buyCharacter()"
               mat-raised-button
       >

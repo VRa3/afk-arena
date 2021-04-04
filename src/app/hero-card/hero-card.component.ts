@@ -14,11 +14,7 @@ import {AppState} from '../store/app.reducer';
 })
 export abstract class HeroCardComponent implements OnInit {
   @Input() hero: IHero;
-  @Input() ableToBuy: boolean;
-  @Input() upgradeable: boolean;
-  @Input() shopUI: boolean;
   isStarred: boolean;
-  canBeLeveledUp: boolean;
   faction = Faction;
 
   get currentCP(): number {
@@ -30,9 +26,7 @@ export abstract class HeroCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const {favorite, obtained} = this.hero;
-    this.isStarred = favorite;
-    this.canBeLeveledUp = obtained && !this.shopUI && (this.hero.lvlCurrent !== this.hero.lvlCap);
+    this.isStarred = this.hero.favorite;
   }
 
   starToggle() {
