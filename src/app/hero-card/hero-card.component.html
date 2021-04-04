@@ -7,11 +7,14 @@
     <mat-card-title *ngIf="upgradeable; else notUpgradeableTitle">
       {{hero.name}} - {{hero.lvlCurrent}}lvl
     </mat-card-title>
-    <ng-template #notUpgradeableTitle><mat-card-title>{{hero.name}}</mat-card-title></ng-template>
+    <ng-template #notUpgradeableTitle>
+      <mat-card-title>{{hero.name}}</mat-card-title>
+    </ng-template>
 
     <mat-card-subtitle>{{faction[hero.faction]}}</mat-card-subtitle>
 
-    <app-ascension-badge *ngIf="upgradeable" class="hero-card__ascension-badge" [ascensionLvl]="hero.ascensionLvl"></app-ascension-badge>
+    <app-ascension-badge *ngIf="upgradeable" class="hero-card__ascension-badge"
+                         [ascensionLvl]="hero.ascensionLvl"></app-ascension-badge>
   </mat-card-header>
   <mat-card-content>
     <p>
@@ -25,23 +28,30 @@
       <br>
     </p>
     <div *ngIf="upgradeable">
-      Upgrade cost:
+      Upgrade cost
       <br>
       <div *ngFor="let cost of upgradeCost">
-        {{cost.resourceType}} - {{cost.amount}}
+        {{cost.resourceType}}: {{cost.amount}}
       </div>
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button *ngIf="shopUI" [disabled]="!ableToBuy" (click)="buyCharacter()" mat-raised-button>
-      <mat-icon aria-hidden="false" aria-label="Buy character icon">shop</mat-icon>
-    </button>
+    <span [matTooltip]="ableToBuy ? characterCostText : 'Sorry, You can\' afford this character.'">
+      <button *ngIf="shopUI"
+              [disabled]="!ableToBuy"
+              (click)="buyCharacter()"
+              mat-raised-button
+      >
+        <mat-icon aria-hidden="false" aria-label="Buy character icon">shop</mat-icon>
+      </button>
+    </span>
 
-    <button *ngIf="canBeLeveledUp" (click)="levelUp()" mat-raised-button>
+    <button *ngIf="canBeLeveledUp" (click)="levelUp()" mat-raised-button matTooltip="Upgrade!">
       <mat-icon aria-hidden="false" aria-label="Buy character icon">upgrade</mat-icon>
     </button>
 
-    <button (click)="starToggle()" [@starToggling]="isStarred" (@starToggling.done)="afterStarToggle($event)" mat-raised-button >
+    <button (click)="starToggle()" [@starToggling]="isStarred" (@starToggling.done)="afterStarToggle($event)"
+            mat-raised-button>
       <mat-icon aria-hidden="false" aria-label="Star character icon">star</mat-icon>
     </button>
   </mat-card-actions>

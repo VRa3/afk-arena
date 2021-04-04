@@ -33,6 +33,10 @@ export class HeroCardComponent implements OnInit {
     return this.heroService.getUpgradeCosts(this.hero);
   }
 
+  get characterCostText(): string {
+    return `Buy ${this.hero.name} for ${this.hero.price} golds`;
+  }
+
   constructor(private store: Store<AppState>,
               private route: ActivatedRoute,
               private heroService: HeroService) {

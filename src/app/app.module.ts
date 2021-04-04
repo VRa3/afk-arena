@@ -24,7 +24,7 @@ import {MissionService} from './mission/mission.service';
 
 import * as fromApp from './store/app.reducer';
 import {HeroesEffects} from './store/heroes/heroes.effects';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -43,6 +43,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    MatTooltipModule,
     AppRoutingModule,
     StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([StoreEffects, HeroesEffects]),
