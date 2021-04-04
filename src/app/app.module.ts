@@ -26,6 +26,9 @@ import * as fromApp from './store/app.reducer';
 import {HeroesEffects} from './store/heroes/heroes.effects';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {OverviewHeroCardComponent} from './hero-card/overview/overview-hero-card.component';
+import {BuyableHeroCardComponent} from './hero-card/buyable/buyable-hero-card.component';
+import {UpgradeableHeroCardComponent} from './hero-card/upgradeable/upgradeable-hero-card.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     BottomBarComponent,
     MissionComponent,
     AscensionBadgeComponent,
+    OverviewHeroCardComponent,
+    BuyableHeroCardComponent,
+    UpgradeableHeroCardComponent
   ],
   imports: [
     BrowserModule,
