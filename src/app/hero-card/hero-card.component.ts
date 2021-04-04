@@ -1,21 +1,18 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IHero} from './IHero';
 import {Faction} from '../models/enums/faction';
 import {Store} from '@ngrx/store';
 import {HeroService} from './hero.service';
 import {starToggling} from './hero-card.animations';
-import {buyCharacter, levelUpCharacter, starToggler} from '../store/heroes/heroes.actions';
+import {starToggler} from '../store/heroes/heroes.actions';
 import {AppState} from '../store/app.reducer';
-import {IResourceToManage} from '../store/resources/resources.actions';
 
 @Component({
-  selector: 'app-hero-card',
-  templateUrl: './hero-card.component.html',
-  styleUrls: ['./hero-card.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  selector: 'app-hero-card-base',
+  template: '<div>app-hero-card-base class</div>',
   animations: starToggling
 })
-export class HeroCardComponent implements OnInit {
+export abstract class HeroCardComponent implements OnInit {
   @Input() hero: IHero;
   @Input() ableToBuy: boolean;
   @Input() upgradeable: boolean;
@@ -28,16 +25,8 @@ export class HeroCardComponent implements OnInit {
     return this.heroService.getCurrentCP(this.hero);
   }
 
-  get upgradeCost(): IResourceToManage[] {
-    return this.heroService.getUpgradeCosts(this.hero);
-  }
-
-  get characterCostText(): string {
-    return `Buy ${this.hero.name} for ${this.hero.price} golds`;
-  }
-
-  constructor(private store: Store<AppState>,
-              private heroService: HeroService) {
+  constructor(protected store: Store<AppState>,
+              protected heroService: HeroService) {
   }
 
   ngOnInit(): void {
@@ -47,15 +36,7 @@ export class HeroCardComponent implements OnInit {
   }
 
   starToggle() {
-      this.isStarred = !this.isStarred;
-  }
-
-  buyCharacter() {
-    this.store.dispatch(buyCharacter({characterName: this.hero.name, price: this.hero.price}));
-  }
-
-  levelUp() {
-    this.store.dispatch(levelUpCharacter({characterName: this.hero.name}));
+    this.isStarred = !this.isStarred;
   }
 
   afterStarToggle($event) {
