@@ -29,8 +29,6 @@ export class MissionComponent implements OnInit, OnDestroy {
   isAbleToCollectAfkMoney: boolean;
   subManager = new Subscription();
   battleEnded$ = new Subject<any>();
-  // todo: fix this...
-  timeModification = 10;
   fightProgress: number;
 
   constructor(private store: Store<AppState>,
@@ -99,14 +97,14 @@ export class MissionComponent implements OnInit, OnDestroy {
     const winChance = this.missionService.getWinChance(this.teamCP, this.enemyCP);
 
     winChance <= 1
-      ? this.timeToEndBattle = 300 * this.timeModification
-      : this.timeToEndBattle = Math.floor(this.missionService.missionBaseTime / winChance) * this.timeModification * 10;
+      ? this.timeToEndBattle = this.missionService.missionBaseTime
+      : this.timeToEndBattle = Math.floor(this.missionService.missionBaseTime / winChance);
     this.fightProgress = winChance;
 
   }
 
   countdownWhileBattling(): void {
-    this.timeToEndBattle = this.timeToEndBattle - this.timeModification;
+    this.timeToEndBattle = +(this.timeToEndBattle - 0.1).toFixed(2);
     if (this.timeToEndBattle <= 0) {
       this.battleEnded$.next(true);
     }
