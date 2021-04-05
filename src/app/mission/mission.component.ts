@@ -3,7 +3,7 @@ import {AppService} from '../app.service';
 import {Store} from '@ngrx/store';
 import {resetOfflineTimer} from '../store/store.actions';
 import {MissionService} from './mission.service';
-import {interval, Subject, Subscription} from 'rxjs';
+import {interval, Observable, Subject, Subscription} from 'rxjs';
 import {take, takeUntil} from 'rxjs/operators';
 import {addResources} from '../store/resources/resources.actions';
 import {AppState} from '../store/app.reducer';
@@ -114,9 +114,10 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   onTeamHelp() {
-    // todo: count deduction power
-    const deductionPower = 0.05;
-    this.fightProgress = this.fightProgress + deductionPower;
+    let playerClickPower = null;
+    this.store.select('player').pipe(take(1)).subscribe(player => playerClickPower = player.clickPower);
+    const deductionPower = +(playerClickPower / this.enemyCP).toFixed(2);
+    this.fightProgress = +(this.fightProgress + deductionPower).toFixed(2);
 
     if (this.fightProgress >= 1) {
       this.battleEnded$.next(true);
