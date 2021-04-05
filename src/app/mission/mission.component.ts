@@ -39,30 +39,19 @@ export class MissionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.appService.teamCP$.subscribe(teamPower => this.teamCP = teamPower);
 
-    const stageAndRewardsSub = this.missionService.rewards$.subscribe(stagesAndRewards => {
-      const {stages, goldRewards, experienceRewards, magicEssenceRewards} = stagesAndRewards as any;
-
-      this.stages = stages;
-      this.rewards = {
-        goldRewards,
-        experienceRewards,
-        magicEssenceRewards
-      };
-    });
-
     this.missionService.generateStagesAndRewards();
 
-    const currentStageSub = this.appService.currentStage$.subscribe(data => {
-      this.currentChapter = data;
-      this.enemyCP = this.stages[this.currentChapter];
-      if (!this.enemyCP) {
+    const currentStageSub = this.appService.currentStage$.subscribe(currentChapter => {
+      if (currentChapter) {
+        this.currentChapter = currentChapter;
+        this.enemyCP = this.missionService.rewards.stages[currentChapter];
+      } else {
         this.hasMoreChapters = false;
       }
     });
 
     this.isAbleToCollectAfkMoney = this.getOfflineTimeInSeconds() > 15;
 
-    this.subManager.add(stageAndRewardsSub);
     this.subManager.add(currentStageSub);
   }
 
@@ -83,12 +72,12 @@ export class MissionComponent implements OnInit, OnDestroy {
         this.timeToEndBattle = null;
 
         if (this.fightProgress >= 1) {
-          this.appService.advancePlayerToNextStage(this.currentChapter + 1);
-          this.giveRewards();
+          this.appService.advancePlayerToNextStage();
+          this.missionService.giveRewards(this.currentChapter);
           return;
         }
 
-        this.giveSmallRewards();
+        this.missionService.giveSmallRewards(this.currentChapter);
       }
     });
   }
@@ -100,7 +89,6 @@ export class MissionComponent implements OnInit, OnDestroy {
       ? this.timeToEndBattle = this.missionService.missionBaseTime
       : this.timeToEndBattle = Math.floor(this.missionService.missionBaseTime / winChance);
     this.fightProgress = winChance;
-
   }
 
   countdownWhileBattling(): void {
@@ -110,34 +98,12 @@ export class MissionComponent implements OnInit, OnDestroy {
     }
   }
 
-  giveRewards(): void {
-    this.store.dispatch(addResources({
-      gold: this.rewards.goldRewards[this.currentChapter - 1],
-      experience: this.rewards.experienceRewards[this.currentChapter - 1],
-      magicEssence: this.rewards.magicEssenceRewards[this.currentChapter - 1]
-    }));
-  }
-
-  giveSmallRewards(): void {
-    const multiplier = 0.25;
-
-    this.store.dispatch(addResources({
-      gold: (this.rewards.goldRewards[this.currentChapter - 1] * multiplier),
-      experience: (this.rewards.experienceRewards[this.currentChapter - 1] * multiplier),
-      magicEssence: (this.rewards.magicEssenceRewards[this.currentChapter - 1] * multiplier)
-    }));
-  }
-
   collectAFKMoney(): void {
     const multiplier = +(this.getOfflineTimeInSeconds() / 3600).toFixed(2);
     this.isAbleToCollectAfkMoney = false;
     interval(15000).pipe(take(1)).subscribe(() => this.isAbleToCollectAfkMoney = true);
 
-    this.store.dispatch(addResources({
-      gold: (this.rewards.goldRewards[this.currentChapter - 1] * multiplier),
-      experience: (this.rewards.experienceRewards[this.currentChapter - 1] * multiplier),
-      magicEssence: (this.rewards.magicEssenceRewards[this.currentChapter - 1] * multiplier)
-    }));
+    this.missionService.giveSmallRewards(this.currentChapter, multiplier);
     this.store.dispatch(resetOfflineTimer());
   }
 
@@ -158,6 +124,9 @@ export class MissionComponent implements OnInit, OnDestroy {
   }
 
   onCheat() {
+    this.fightProgress = 1;
+    this.battleEnded$.next(true);
+
     this.store.dispatch(addResources({
       gold: 1000,
       experience: 1000,

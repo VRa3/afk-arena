@@ -12,6 +12,7 @@ export class AppService {
   // tslint:disable:variable-name
 
   store$: Observable<any>;
+  private _currentStage = 1;
   currentStage$ = new BehaviorSubject(1);
   teamCP$ = new BehaviorSubject(0);
 
@@ -47,7 +48,12 @@ export class AppService {
     this.teamCP$.next(amount);
   }
 
-  advancePlayerToNextStage(stage) {
-    this.currentStage$.next(stage);
+  advancePlayerToNextStage() {
+    this._currentStage++;
+    if (this._currentStage >= 20) {
+      this.currentStage$.next(undefined);
+      return;
+    }
+    this.currentStage$.next(this._currentStage);
   }
 }
